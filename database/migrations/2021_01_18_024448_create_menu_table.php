@@ -18,7 +18,8 @@ class CreateMenuTable extends Migration
             $table->string('name');
             $table->string('url')->nullable();
             $table->string('icons')->nullable();
-            $table->timestamps();
+            $table->integer('parent_id')->nullable();
+            $table->integer('order')->nullable();
         });
     }
 

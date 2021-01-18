@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('default');
+    return view('welcome');
+});
+
+Route::prefix('menu')->group(function () {
+    Route::get('/', [MenuController::class, 'index']);
+    Route::get('/form', [MenuController::class, 'form']);
+    Route::post('/store', [MenuController::class, 'store']);
+    Route::get('edit/{id}', [MenuController::class, 'edit']);
+    Route::post('update/{id}', [MenuController::class, 'update']);
+});
+Route::prefix('users')->group(function () {
+    Route::get('/', function() {
+        return view('pages.users.index');
+    });
 });
