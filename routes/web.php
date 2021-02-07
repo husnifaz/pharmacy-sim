@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PegawaiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,9 +25,12 @@ Route::prefix('menu')->group(function () {
     Route::post('/store', [MenuController::class, 'store']);
     Route::get('edit/{id}', [MenuController::class, 'edit']);
     Route::post('update/{id}', [MenuController::class, 'update']);
+    Route::get('delete/{id}', [MenuController::class, 'delete']);
 });
 Route::prefix('users')->group(function () {
     Route::get('/', function() {
         return view('pages.users.index');
     });
 });
+
+Route::resource('pegawai', PegawaiController::class);

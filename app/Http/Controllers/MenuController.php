@@ -37,7 +37,7 @@ class MenuController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'order' => 'numeric'
+            'order' => 'numeric|nullable'
         ]);
 
         try {
@@ -59,8 +59,8 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        $model = Menu::where('id', $id)->first();
-        return view('pages.menu.edit', compact('model'));
+        $model = Menu::findOrFail($id);
+        return view('pages.menu.form', compact('model'));
     }
 
     /**
@@ -70,10 +70,22 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $model = Menu::where('id', $id)->first();
+        $model = Menu::findOrFail($id);
 
         $model->fill($request->all());
         $model->save();
+
+        return redirect('menu')->with('success', 'Success');
+    }
+
+    /**
+     * Delete.
+     *
+     */
+    public function delete($id)
+    {
+        $model = Menu::findOrFail($id);
+        $model->delete();
 
         return redirect('menu')->with('success', 'Success');
     }

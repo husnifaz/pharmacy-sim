@@ -34,13 +34,16 @@ class Menu extends Model
 
     public static function getListMenu()
     {
-        return self::orderBy('order')
-            ->whereNotNull('parent_id')->get();
+        $modelParent = self::orderBy('order')->whereNull('parent_id')->get();
+        $modelParent->map(function($query) {
+            $query['child'] = self::orderBy('order')->where('parent_id', $query->id)->get();
+        });
+
+        return $modelParent;
     }
 
     public static function getListParentMenu()
     {
-        return self::orderBy('order')
-            ->whereNull('parent_id')->get();
+        return self::orderBy('order')->whereNull('parent_id')->distinct('parent_id')->get();
     }
 }

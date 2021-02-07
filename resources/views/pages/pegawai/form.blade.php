@@ -1,6 +1,10 @@
 @extends('default')
 @section('content_header')
-  <x-title-bar title="Form Edit Menu"/>
+  @if (isset($model))
+  <x-title-bar title="Form Edit Pegawai"/>
+  @else
+  <x-title-bar title="Form Input Pegawai"/>
+  @endif
   @if ($errors->any())
   <div class="{{'alert alert-danger alert-dismissible'}}">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -13,32 +17,33 @@
 @section('content')
 <div class="row">
   <div class="col-md-12">
-    <form role="form" action="{{url('menu/update', $model->id)}}" method="post">
+    @if (isset($model))
+    {!!Form::open(['route' => ['pegawai.update', $id], 'method' => 'put'])!!}
+    @else
+    {!!Form::open(array('action' => 'store', 'method' => 'post'))!!}
+    @endif
       @csrf
       <div class="box-body col-md-8">
         <div class="form-group">
-          <label>Nama Menu</label>
-          <input type="text" class="form-control input-sm" name="name" value="{{$model->name}}">
+          {!!Form::label('name', 'Nama Pegawai')!!}
+          {!!Form::text(['name' => 'nama', 'class' => 'form-control input-sm'])!!}
         </div>
         <div class="form-group">
           <label>Url</label>
-          <input type="text" class="form-control input-sm" name="url" value="{{$model->url}}">
+          <input type="text" class="form-control input-sm" name="url" value="{{isset($model) ? $model->url : old('url')}}">
         </div>
         <div class="form-group">
           <label>Order</label>
-          <input type="text" class="form-control input-sm" name="order" value="{{$model->order}}">
+          <input type="text" class="form-control input-sm" name="order" value="{{isset($model) ? $model->order : old('order')}}">
         </div>
         <div class="form-group">
           <label>Ikon</label>
-          <input type="text" class="form-control input-sm" name="icons" value="{{$model->icons}}">
+          <input type="text" class="form-control input-sm" name="icons" value="{{isset($model) ? $model->icons : old('icons')}}">
         </div>
         <div class="form-group">
-          <label>Parent Menu</label>
+          <label>Parent Pegawai</label>
           <select class="form-control input-sm" name="parent_id">
-            <option value="{{$model->parent_id}}" selected disabled hidden></option>
-            @foreach(\App\Models\Menu::getListParentMenu() as $parent)
-              <option value="{{$parent->id}}">{{$parent->name}}</option>
-            @endforeach
+
           </select>
         </div>
         <input type="submit" class="btn btn-primary" value="submit"/>
