@@ -118,13 +118,13 @@
           <!-- Menu Toggle Button -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-            <span class="hidden-xs">User</span>
+            <span class="hidden-xs">{{auth()->user()->name}}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- The user image in the menu -->
             <li class="user-header">
               <p>
-                Alexander Pierce - Web Developer
+                {{auth()->user()->name}}
                 <small>Member since Nov. 2012</small>
               </p>
             </li>
@@ -149,7 +149,10 @@
                 <a href="#" class="btn btn-default btn-flat">Profile</a>
               </div>
               <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                <form action="{{route('logout')}}" method="post">
+                  @csrf
+                  <input type="submit" class="btn btn-default btn-flat" value="Sign out"/>
+                </form>
               </div>
             </li>
           </ul>

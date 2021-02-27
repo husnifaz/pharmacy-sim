@@ -16,21 +16,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
 });
 
-Route::prefix('menu')->group(function () {
-    Route::get('/', [MenuController::class, 'index']);
+Route::get('/home', function () {
+    return redirect()->route('indexMenu');
+});
+
+Route::prefix('menu')->middleware('auth')->group(function () {
+    Route::get('/', [MenuController::class, 'index'])->name('indexMenu');
     Route::get('/form', [MenuController::class, 'form']);
     Route::post('/store', [MenuController::class, 'store']);
     Route::get('edit/{id}', [MenuController::class, 'edit']);
     Route::post('update/{id}', [MenuController::class, 'update']);
     Route::get('delete/{id}', [MenuController::class, 'delete']);
-});
-Route::prefix('users')->group(function () {
-    Route::get('/', function() {
-        return view('pages.users.index');
-    });
 });
 
 Route::resource('pegawai', PegawaiController::class);
