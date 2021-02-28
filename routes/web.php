@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-
+    return redirect()->route('indexMenu');
 });
 
 Route::get('/home', function () {
     return redirect()->route('indexMenu');
 });
 
-Route::prefix('menu')->middleware('auth')->group(function () {
+Route::prefix('menu')->middleware('verified:login')->group(function () {
     Route::get('/', [MenuController::class, 'index'])->name('indexMenu');
     Route::get('/form', [MenuController::class, 'form']);
     Route::post('/store', [MenuController::class, 'store']);
