@@ -36,7 +36,17 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nik' => 'required',
+            'nama' => 'required',
+        ]);
+
+        $model = new Pegawai();
+        $model->fill($request->all());
+        $model->tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
+        $model->save();
+
+        return redirect('pegawai')->with('success', 'Save Success');
     }
 
     /**
@@ -58,7 +68,8 @@ class PegawaiController extends Controller
      */
     public function edit(pegawai $pegawai)
     {
-        //
+        $model = Pegawai::find($pegawai)->first();
+        return view('pages.pegawai.form', compact('model'));
     }
 
     /**
@@ -70,7 +81,16 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, pegawai $pegawai)
     {
-        //
+        $request->validate([
+            'nik' => 'required',
+            'nama' => 'required',
+        ]);
+
+        $pegawai->fill($request->all());
+        $pegawai->tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
+        $pegawai->save();
+
+        return redirect('pegawai')->with('success', 'Update Success');
     }
 
     /**
@@ -81,6 +101,7 @@ class PegawaiController extends Controller
      */
     public function destroy(pegawai $pegawai)
     {
-        //
+        $pegawai->delete();
+        return redirect('pegawai')->with('success', 'Deleted');
     }
 }

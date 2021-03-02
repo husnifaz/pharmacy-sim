@@ -33,13 +33,17 @@
               @foreach ($model as $key => $item)
                 <tr>
                   <td>{{$key+1}}</td>
-                  <td>{{$item->name}}</td>
+                  <td>{{$item->nama}}</td>
                   <td>{{$item->nik}}</td>
                   <td>
                     <div class="btn-group">
+                      <form action="{{route('pegawai.destroy', $item->id)}}" method="post">
                       <a href="" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
-                      <a href="pegawai/edit/{{$item->id}}" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
-                      <a class="btn btn-danger btn-xs" onClick="confirm('Apakah Anda Yakin ?')" href="pegawai/delete/{{$item->id}}"><span class="fa fa-trash"></span></a>
+                      <a href="pegawai/{{$item->id}}/edit" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger btn-xs" onClick="confirm('Apakah Anda Yakin ?')" type="submit"><span class="fa fa-trash"></span></a>
+                      </form>
                     </div>
                   </td>
                 </tr>

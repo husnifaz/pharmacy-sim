@@ -6,3 +6,8 @@ $("#data1").DataTable({
   'info'        : false,
   'autoWidth'   : false
 })
+
+$('#datepicker').datepicker({
+  autoclose: true,
+  format: 'dd/mm/yyyy',
+})

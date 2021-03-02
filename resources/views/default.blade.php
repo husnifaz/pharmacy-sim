@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{asset('css/skin-blue.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('css/personal.css')}}">
 </head>
@@ -55,6 +56,7 @@
   <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('js/dataTables.bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
+  <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>
 </body>
 </html>

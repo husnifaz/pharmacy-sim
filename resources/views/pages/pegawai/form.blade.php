@@ -18,33 +18,52 @@
 <div class="row">
   <div class="col-md-12">
     @if (isset($model))
-    {!!Form::open(['route' => ['pegawai.update', $id], 'method' => 'put'])!!}
+    <form action="{{route('pegawai.update', $model->id)}}" method="post">
+      @method('PUT')
     @else
-    {!!Form::open(array('action' => 'store', 'method' => 'post'))!!}
+    <form action="{{route('pegawai.store')}}" method="post">
     @endif
       @csrf
       <div class="box-body col-md-8">
         <div class="form-group">
-          {!!Form::label('name', 'Nama Pegawai')!!}
-          {!!Form::text(['name' => 'nama', 'class' => 'form-control input-sm'])!!}
+        <label>NIK</label>
+          <input type="text" class="form-control input-sm" name="nik" value="{{isset($model) ? $model->nik : old('nik')}}">
         </div>
         <div class="form-group">
-          <label>Url</label>
-          <input type="text" class="form-control input-sm" name="url" value="{{isset($model) ? $model->url : old('url')}}">
+          <label>Nama Lengkap</label>
+          <input type="text" class="form-control input-sm" name="nama" value="{{isset($model) ? $model->nama : old('nama')}}">
         </div>
         <div class="form-group">
-          <label>Order</label>
-          <input type="text" class="form-control input-sm" name="order" value="{{isset($model) ? $model->order : old('order')}}">
+          <div class="radio">
+            <label>
+              <input type="radio" name="gender" id="optionsRadios1" value="1" {{isset($model) ? $model->gender == 1 ? 'checked' : '' : ''}}>
+              Laki-laki
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="gender" id="optionsRadios2" value="2" {{isset($model) ? $model->gender == 2 ? 'checked' : '' : ''}}>
+              Perempuan
+            </label>
+          </div>
         </div>
         <div class="form-group">
-          <label>Ikon</label>
-          <input type="text" class="form-control input-sm" name="icons" value="{{isset($model) ? $model->icons : old('icons')}}">
+          <label>Alamat</label>
+          <textarea class="form-control" rows="3" name="alamat">{{isset($model) ? $model->alamat : old('alamat')}}</textarea>
         </div>
         <div class="form-group">
-          <label>Parent Pegawai</label>
-          <select class="form-control input-sm" name="parent_id">
-
-          </select>
+          <label>Tanggal Lahir</label>
+          <div class="input-group date">
+            <div class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir" value="{{isset($model) ? \Carbon\Carbon::parse($model->tgl_lahir)->format('d/m/Y') : old('tgl_lahir')}}">
+          </div>
+          <!-- /.input group -->
+        </div>
+        <div class="form-group">
+        <label>No Telp.</label>
+          <input type="number" class="form-control input-sm" name="no_telp" value="{{isset($model) ? $model->no_telp : old('no_telp')}}">
         </div>
         <input type="submit" class="btn btn-primary" value="submit"/>
       <!-- /.box-body -->
@@ -52,3 +71,4 @@
   </div>
 </div>
 @endsection
+
