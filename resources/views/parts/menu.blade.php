@@ -6,7 +6,7 @@
   <ul class="sidebar-menu" data-widget="tree">
     <li class="header">HEADER</li>
     <!-- Optionally, you can add icons to the links -->
-    @foreach (App\Models\Menu::getListMenu() as $menu)
+    @foreach (App\Models\Menu::getListMenu(auth()->user()->id) as $menu)
         <li class="treeview">
           <a href="#"><i class="{{'fa '.$menu->icons}}"></i> <span>{{$menu->name}}</span>
             <span class="pull-right-container">

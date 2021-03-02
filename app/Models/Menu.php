@@ -32,12 +32,25 @@ class Menu extends Model
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
 
-    public static function getListMenu()
+    public static function getListMenu($userId)
     {
-        $modelParent = self::orderBy('order')->whereNull('parent_id')->get();
-        $modelParent->map(function($query) {
-            $query['child'] = self::orderBy('order')->where('parent_id', $query->id)->get();
-        });
+        if ($userId === 4) {
+            $modelParent = self::orderBy('order')->whereNull('parent_id')->get();
+            $modelParent->map(function($query) {
+                $query['child'] = self::orderBy('order')->where('parent_id', $query->id)->get();
+            });
+        } else {
+            $getMenuRole = Role::where('user_id', $userId)->pluck('menu_id')->unique();
+            $modelMenu = self::whereIn('id', $getMenuRole)->get();
+            $parents = self::whereIn('id', $modelMenu->pluck('parent_id')->unique())->get();
+
+            $modelParent = [];
+            foreach ($parents as $parent) {
+                $parent['child'] = $modelMenu->where('parent_id', $parent['id']);
+
+                $modelParent[] = $parent;
+            }
+        }
 
         return $modelParent;
     }
