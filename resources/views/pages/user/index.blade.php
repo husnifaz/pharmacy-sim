@@ -1,6 +1,6 @@
 @extends('default')
 @section('content_header')
-  <x-title-bar title="List pegawai"/>
+  <x-title-bar title="List Pengguna"/>
 @endsection
 @section('content')
     <div class="row">
@@ -14,7 +14,7 @@
       </div>
       @endif
       <div class="col-xs-2 mb-10">
-        <a href="{{route('pegawai.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
+        <a href="{{route('user.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
       </div>
       <div class="col-xs-12">
         <div class="box">
@@ -24,8 +24,8 @@
               <thead>
               <tr>
                 <th width="5%">No</th>
-                <th>Nama pegawai</th>
-                <th>NIK</th>
+                <th>Nama</th>
+                <th>Email</th>
                 <th width="10%">Aksi</th>
               </tr>
               </thead>
@@ -33,13 +33,13 @@
               @foreach ($model as $key => $item)
                 <tr>
                   <td>{{$key+1}}</td>
-                  <td>{{$item->nama}}</td>
-                  <td>{{$item->nik}}</td>
+                  <td>{{$item->name}}</td>
+                  <td>{{$item->email}}</td>
                   <td>
                     <div class="btn-group">
-                      <form action="{{route('pegawai.destroy', $item->id)}}" method="post">
-                      <a href="{{route('pegawai.show', $item->id)}}" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
-                      <a href="pegawai/{{$item->id}}/edit" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <form action="{{route('user.destroy', $item->id)}}" method="post">
+                      <a href="{{route('user.show', $item->id)}}" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
+                      <a href="user/{{$item->id}}/edit" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-xs" onClick="confirm('Apakah Anda Yakin ?')" type="submit"><span class="fa fa-trash"></span></a>

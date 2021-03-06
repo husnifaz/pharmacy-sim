@@ -4,7 +4,7 @@
 <section class="sidebar">
   <!-- Sidebar Menu -->
   <ul class="sidebar-menu" data-widget="tree">
-    <li class="header">HEADER</li>
+    <li class="header">MENU</li>
     <!-- Optionally, you can add icons to the links -->
     @foreach (App\Models\Menu::getListMenu(auth()->user()->id) as $menu)
         <li class="treeview">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
 {
@@ -39,11 +40,18 @@ class PegawaiController extends Controller
         $request->validate([
             'nik' => 'required',
             'nama' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $model = new Pegawai();
         $model->fill($request->all());
         $model->tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
+        if ($request->image) {
+            $imageName = 'pegawai_'.$model->nik.'.'.$request->image->getClientOriginalExtension();
+            $path = $request->image->storeAs('pegawai', $imageName, 'public');
+            $model->image_url = $path;
+        }
+
         $model->save();
 
         return redirect('pegawai')->with('success', 'Save Success');
@@ -57,7 +65,8 @@ class PegawaiController extends Controller
      */
     public function show(pegawai $pegawai)
     {
-        //
+        $model = Pegawai::find($pegawai)->first();
+        return view('pages.pegawai.show', compact('model'));
     }
 
     /**

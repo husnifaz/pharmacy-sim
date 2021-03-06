@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,5 +35,6 @@ Route::middleware(['verified:login', 'permission'])->group(function() {
     });
 
     Route::resource('pegawai', PegawaiController::class);
+    Route::resource('user', UserController::class);
 });
 

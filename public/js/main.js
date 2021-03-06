@@ -9,5 +9,5 @@ $("#data1").DataTable({
 
 $('#datepicker').datepicker({
   autoclose: true,
-  format: 'dd/mm/yyyy',
+  format: 'dd-mm-yyyy',
 })
