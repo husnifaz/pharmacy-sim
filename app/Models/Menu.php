@@ -32,15 +32,15 @@ class Menu extends Model
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
 
-    public static function getListMenu($userId)
+    public static function getListMenu($user)
     {
-        if ($userId === 4) {
+        if ($user->role_admin) {
             $modelParent = self::orderBy('order')->whereNull('parent_id')->get();
             $modelParent->map(function($query) {
                 $query['child'] = self::orderBy('order')->where('parent_id', $query->id)->get();
             });
         } else {
-            $getMenuRole = Role::where('user_id', $userId)->pluck('menu_id')->unique();
+            $getMenuRole = Role::where('user_id', $user->user_id)->pluck('menu_id')->unique();
             $modelMenu = self::whereIn('id', $getMenuRole)->get();
             $parents = self::whereIn('id', $modelMenu->pluck('parent_id')->unique())->get();
 
