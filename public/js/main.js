@@ -11,3 +11,8 @@ $('#datepicker').datepicker({
   autoclose: true,
   format: 'dd-mm-yyyy',
 })
+
+function confirmDelete(event) {
+  if(!confirm("Apakah anda yakin"))
+      event.preventDefault();
+}
