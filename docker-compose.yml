@@ -9,6 +9,7 @@ services:
             user: husni
             uid: 1000
     image: aboutlaravel
+    working_dir: /var/www/
     ports:
         - '80:80'
     volumes:
