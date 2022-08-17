@@ -52,15 +52,14 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
-        'sftp' => [
-            'driver' => 'sftp',
-            'host' => env('SFTP_HOST'),
-
-            'username' => env('SFTP_USERNAME'),
-            'password' => env('SFTP_PASSWORD'),
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
 
             // 'privateKey' => env('SFTP_PRIVATE_KEY'),
-            'password' => env('SFTP_PASSWORD'),
+            // 'password' => env('SFTP_PASSWORD'),
 
             // Optional SFTP Settings...
             // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
