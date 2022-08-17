@@ -47,8 +47,8 @@ class PegawaiController extends Controller
         $model->fill($request->all());
         $model->tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
         if ($request->image) {
-            $imageName = 'pegawai_'.$model->nik.'.'.$request->image->getClientOriginalExtension();
-            $path = $request->image->storeAs('pegawai', $imageName, 'public');
+            $imageName = 'pegawai_' . $model->nik . '.' . $request->image->getClientOriginalExtension();
+            $path = $request->image->storeAs('pegawai', $imageName);
             $model->image_url = $path;
         }
 
