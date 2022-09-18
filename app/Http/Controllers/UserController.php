@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.user.form');
     }
 
     /**
@@ -38,7 +38,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'retype_password' => 'required|same:password'
+        ]);
+
+        $model = new User();
+        $model->fill($request->all());
+        $model->save();
+
+        return redirect('user')->with('success', 'Success');
     }
 
     /**
@@ -80,7 +91,7 @@ class UserController extends Controller
             $user->save();
 
             foreach ($request->roles as $role) {
-                $modelRole = Role::where([['user_id', $user->id],['menu_id', $role]])->first();
+                $modelRole = Role::where([['user_id', $user->id], ['menu_id', $role]])->first();
                 if (!$modelRole) {
                     $modelRole = new Role();
                     $modelRole->user_id = $user->id;

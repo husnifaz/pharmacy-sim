@@ -41,9 +41,8 @@
               <td>{{$item->order}}</td>
               <td>{{$item->icons}}</td>
               <td>{{$item->menuParent ? $item->menuParent->name : ''}}</td>
-              <td>
+              <td class="text-center">
                 <div class="btn-group">
-                  <a href="" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
                   <a href="menu/edit/{{$item->id}}" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
                   <a class="btn btn-danger btn-xs" onClick="confirm('Apakah Anda Yakin ?')" href="menu/delete/{{$item->id}}"><span class="fa fa-trash"></span></a>
                 </div>
