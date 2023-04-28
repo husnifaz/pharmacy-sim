@@ -68,7 +68,7 @@
   <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.10/dist/sweetalert2.all.min.js"></script>
-  @yield('script');
+  @yield('script')
 </body>
 @include('parts.modal')
 
