@@ -1,24 +1,16 @@
 @extends('default')
+
 @section('content_header')
-<x-title-bar title="List Menu" />
+<x-title-bar title="{{$title}}" />
 @endsection
+
 @section('content')
 <div class="row">
-  @if ($message = Session::get('success'))
-  <div class="col-xs-12">
-    <div class="alert alert-success alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <h4><i class="icon fa fa-check"></i>Success</h4>
-      {{$message}}
-    </div>
-  </div>
-  @endif
-  <div class="col-xs-2 mb-10">
-    <a href="menu/form" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
-  </div>
   <div class="col-xs-12">
     <div class="box">
-      <!-- /.box-header -->
+      <div class="col-md-6 col-xs-6" style="margin-top: 10px;">
+        <a href="menu/form" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
+      </div>
       <div class="box-body">
         <table class="table table-bordered table-hover" id="data1">
           <thead>

@@ -31,6 +31,13 @@ class MenuSeeder extends Seeder
             'order' => 1,
         ]);
 
+        DB::table('menu')->insert([
+            'name' => 'Pegawai',
+            'url' => 'pegawai',
+            'icons' => 'fa-user',
+            'order' => 2,
+        ]);
+
         DB::table('roles')->insert([
             'user_id' => 1,
             'menu_id' => 1

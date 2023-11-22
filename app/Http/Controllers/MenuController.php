@@ -14,8 +14,9 @@ class MenuController extends Controller
      */
     public function index()
     {
+        $title = 'Menu';
         $model = Menu::orderBy('id', 'asc')->with('menuParent')->get();
-        return view('pages.menu.index', compact('model'));
+        return view('pages.menu.index', compact('model', 'title'));
     }
 
     /**

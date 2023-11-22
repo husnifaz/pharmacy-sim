@@ -38,5 +38,3 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::resource('pegawai', PegawaiController::class);
     Route::resource('user', UserController::class);
 });
-
-Route::resource('dishes', DishController::class);
