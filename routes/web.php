@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DishController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\UserController;
@@ -24,7 +25,7 @@ Route::get('/home', function () {
     return redirect()->route('indexMenu');
 });
 
-Route::middleware(['verified:login', 'permission'])->group(function() {
+Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::prefix('menu')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('indexMenu');
         Route::get('/form', [MenuController::class, 'form']);
@@ -38,3 +39,4 @@ Route::middleware(['verified:login', 'permission'])->group(function() {
     Route::resource('user', UserController::class);
 });
 
+Route::resource('dishes', DishController::class);
