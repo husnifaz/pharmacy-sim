@@ -7,11 +7,13 @@
       <li class="header">MENU</li>
       <!-- Optionally, you can add icons to the links -->
       @foreach (App\Models\Menu::getListMenu(auth()->user()) as $menu)
-      <li class="treeview {{ (request()->is($menu->url.'*')) ? 'active' : '' }}">
-        <a href="#"><i class="{{'fa '.$menu->icons}}"></i> <span>{{$menu->name}}</span>
+      <li class="{{count($menu->child) > 0 ? 'treeview' : url($menu->url)}}  {{ (request()->is($menu->url.'*')) ? 'active' : '' }}">
+        <a href="{{count($menu->child) > 0 ? '#' : url($menu->url) }}"><i class="{{'fa '.$menu->icons}}"></i> <span>{{$menu->name}}</span>
+        @if (count($menu->child) > 0)
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
+        @endif
         </a>
         <ul class="treeview-menu">
           @foreach($menu['child'] as $child)
