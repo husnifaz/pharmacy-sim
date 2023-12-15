@@ -14,7 +14,7 @@
   </div>
   @endif
   <div class="col-xs-2 mb-10">
-    <a href="{{route('pegawai.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
+    <a href="{{route('employee.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
   </div>
   <div class="col-xs-12">
     <div class="box">
@@ -33,13 +33,13 @@
             @foreach ($model as $key => $item)
             <tr>
               <td>{{$key+1}}</td>
-              <td>{{$item->nama}}</td>
+              <td>{{$item->name}}</td>
               <td>{{$item->nik}}</td>
               <td>
                 <div class="btn-group">
-                  <form action="{{route('pegawai.destroy', $item->id)}}" method="post">
-                    <a href="{{route('pegawai.show', $item->id)}}" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
-                    <a href="pegawai/{{$item->id}}/edit" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                  <form action="{{route('employee.destroy', $item->id)}}" method="post">
+                    <a href="{{route('employee.show', $item->id)}}" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
+                    <a href="{{route('employee.update', $item->id)}}" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>

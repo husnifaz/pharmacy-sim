@@ -20,10 +20,10 @@
     <div class="box">
       <div class="box-body">
         @if (isset($model))
-        <form action="{{route('pegawai.update', $model->id)}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('employee.update', $model->id)}}" method="post" enctype="multipart/form-data">
           @method('PUT')
         @else
-        <form action="{{route('pegawai.store')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('employee.store')}}" method="post" enctype="multipart/form-data">
         @endif
           @csrf
         <div class="row">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                   <label>Nama Lengkap</label>
-                  <input type="text" class="form-control input-sm" name="nama" value="{{isset($model) ? $model->nama : old('nama')}}">
+                  <input type="text" class="form-control input-sm" name="name" value="{{isset($model) ? $model->nama : old('name')}}">
                 </div>
                 <div class="form-group">
                   <div class="radio">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="form-group">
                   <label>Alamat</label>
-                  <textarea class="form-control" rows="3" name="alamat">{{isset($model) ? $model->alamat : old('alamat')}}</textarea>
+                  <textarea class="form-control" rows="3" name="address">{{isset($model) ? $model->address : old('address')}}</textarea>
                 </div>
                 <div class="form-group">
                   <label>Tanggal Lahir</label>
@@ -61,13 +61,13 @@
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir" value="{{isset($model) ? \Carbon\Carbon::parse($model->tgl_lahir)->format('d-m-Y') : old('tgl_lahir')}}">
+                    <input type="text" class="form-control pull-right" id="datepicker" name="dob" value="{{isset($model) ? \Carbon\Carbon::parse($model->dob)->format('d-m-Y') : old('dob')}}">
                   </div>
                   <!-- /.input group -->
                 </div>
                 <div class="form-group">
                 <label>No Telp.</label>
-                  <input type="number" class="form-control input-sm" name="no_telp" value="{{isset($model) ? $model->no_telp : old('no_telp')}}">
+                  <input type="number" class="form-control input-sm" name="phone_number" value="{{isset($model) ? $model->phone_number : old('phone_number')}}">
                 </div>
                 <input type="submit" class="btn btn-primary" value="submit"/>
               <!-- /.box-body -->

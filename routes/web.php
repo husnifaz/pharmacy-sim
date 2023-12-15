@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DishController;
+use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\UserController;
@@ -35,6 +36,6 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
         Route::get('delete/{id}', [MenuController::class, 'delete']);
     });
 
-    Route::resource('pegawai', PegawaiController::class);
+    Route::resource('employee', EmployeesController::class);
     Route::resource('user', UserController::class);
 });

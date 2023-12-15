@@ -5,12 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pegawai extends Model
+class Employees extends Model
 {
     use HasFactory;
-
-    protected $table = 'pegawai';
-    protected $primaryKey = 'id';
 
     const GENDER_MAN = 1;
     const GENDER_WOMAN = 2;
@@ -22,12 +19,13 @@ class Pegawai extends Model
      */
     protected $fillable = [
         'nik',
-        'nama',
+        'name',
         'gender',
-        'alamat',
-        // 'tgl_lahir',
-        'no_telp',
-        'image_url'
+        'address',
+        'dob',
+        'phone_number',
+        'image_url',
+        'status'
     ];
 
     public $appends = [
