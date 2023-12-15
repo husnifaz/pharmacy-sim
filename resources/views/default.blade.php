@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
   <title>@yield('title')</title>
-  <link rel="icon" href="{{asset('img/AL.ico')}}" type="image/ico" />
   <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('css/font-awesome/css/font-awesome.min.css')}}">
@@ -22,10 +21,10 @@
 
   <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.min.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/sweetalert2.css')}}">
 
-  <link rel="stylesheet" href="{{asset('css/personal.css')}}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.10/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="{{asset('css/personal.css?v.1')}}">
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -60,14 +59,14 @@
   <script src="{{asset('js/bootstrap.min.js')}}"></script>
   <!-- AdminLTE App -->
   <script src="{{asset('js/adminlte.min.js')}}"></script>
-  <script src="{{asset('js/select2.full.min.js')}}"></script>
+  <script src="{{asset('assets/sweetalert2.all.js')}}"></script>
+  <script src="{{asset('js/select2.min.js')}}"></script>
   <script src="{{asset('js/bootstrap-show-password.min.js')}}"></script>
   <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('js/dataTables.bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
   <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.10/dist/sweetalert2.all.min.js"></script>
   @yield('script')
 </body>
 @include('parts.modal')

@@ -8,3 +8,6 @@
   margin-top: 30px;
   margin-left: 1px;
 }
+.swal2-popup {
+  font-size: 1.5rem !important;
+}

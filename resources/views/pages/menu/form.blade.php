@@ -66,3 +66,17 @@
   </div>
 </div>
 @endsection
+
+@section('script')
+<script>
+  $('input[type="submit"]').click(function(e) {
+    e.preventDefault()
+    Swal.fire({
+      title: "Good job!",
+      text: "You clicked the button!",
+      icon: "success"
+    });
+    // console.log(this.closest("form").submit())
+  })
+</script>
+@endsection
