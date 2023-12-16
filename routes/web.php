@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\UserController;
@@ -38,4 +39,5 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
 
     Route::resource('employee', EmployeesController::class);
     Route::resource('user', UserController::class);
+    Route::resource('item', ItemController::class);
 });
