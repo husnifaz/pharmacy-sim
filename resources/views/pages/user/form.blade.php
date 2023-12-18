@@ -1,18 +1,6 @@
 @extends('default')
 @section('content_header')
-@if (isset($model))
-<x-title-bar title="Form Edit Pengguna" />
-@else
-<x-title-bar title="Form Input Pengguna" />
-@endif
-@if ($errors->any())
-<div class="{{'alert alert-danger alert-dismissible'}}">
-  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-  @foreach($errors->all() as $error)
-  <li>{{$error}}</li>
-  @endforeach
-</div>
-@endif
+<x-title-bar title="{{$title}}" />
 @endsection
 @section('content')
 <div class="row">
@@ -20,8 +8,7 @@
     <div class="box">
       <div class="box-body">
         @if (isset($model))
-        <form action="{{route('user.update', $model->id)}}" method="post">
-          @method('PUT')
+        <form action="{{route('user.update', $model->id)}}" method="post" enctype="multipart/form-data">
           @else
           <form action="{{route('user.store')}}" method="post" enctype="multipart/form-data">
             @endif
@@ -63,7 +50,7 @@
                       </div>
                     </div>
                   </div>
-                  <input type="submit" class="btn btn-primary" value="Simpan" />
+                  <input type="submit" class="btn btn-primary btn-submit" value="Simpan" />
                 </div>
                 <!-- /.box-body -->
                 <div class="col-md-5" style="margin-left: 5rem;">

@@ -59,15 +59,39 @@
   <script src="{{asset('js/bootstrap.min.js')}}"></script>
   <!-- AdminLTE App -->
   <script src="{{asset('js/adminlte.min.js')}}"></script>
-  <script src="{{asset('assets/sweetalert2.all.js')}}"></script>
-  <script src="{{asset('js/select2.min.js')}}"></script>
+  <script src="{{asset('assets/sweetalert2.js')}}"></script>
+  <script src="{{asset('js/select2.full.min.js')}}"></script>
   <script src="{{asset('js/bootstrap-show-password.min.js')}}"></script>
   <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('js/dataTables.bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
   <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
-  <script src="{{asset('js/main.js')}}"></script>
+  <script src="{{asset('js/main.js?v.2')}}"></script>
   @yield('script')
+  @if (session()->has('success'))
+  <script>
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "{{session()->get('success')}}",
+      timer: 2000,
+      showCancelButton: false,
+      showConfirmButton: false
+    })
+  </script>
+  {{session()->forget('success')}}
+  @endif
+
+  @if (session()->has('error'))
+  <script>
+    Swal.fire({
+      title: "Something Wrong",
+      icon: "error",
+      text: "{{session()->get('error')}}"
+    })
+  </script>
+  {{session()->forget('error')}}
+  @endif
 </body>
 @include('parts.modal')
 

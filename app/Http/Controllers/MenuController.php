@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class MenuController extends Controller
 {
@@ -12,11 +13,28 @@ class MenuController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $title = 'Menu';
-        $model = Menu::orderBy('id', 'asc')->with('menuParent')->get();
-        return view('pages.menu.index', compact('model', 'title'));
+        $title = 'Daftar Menu';
+
+        if ($request->ajax()) {
+            $data = Menu::with('menuParent');
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '<div class="btn-group">
+                    <form action="' . route('menu.destroy', $row) . '" method="post">
+                    ' . method_field('DELETE') . '
+                    ' . csrf_field() . '
+                      <a href="' . route('menu.show', $row) . '" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
+                      <a href="' . route('menu.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
+                    </form>
+                  </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('pages.menu.index', compact('title'));
     }
 
     /**
@@ -24,9 +42,10 @@ class MenuController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function form()
+    public function create()
     {
-        return view('pages.menu.form');
+        $title = 'Tambah Menu';
+        return view('pages.menu.form', compact('title'));
     }
 
     /**
@@ -48,7 +67,6 @@ class MenuController extends Controller
 
             return redirect('menu')->with('success', 'Save Success');
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->back()->withErrors($e->getMessage());
         }
     }
@@ -58,10 +76,11 @@ class MenuController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Menu $menu)
     {
-        $model = Menu::findOrFail($id);
-        return view('pages.menu.form', compact('model'));
+        $title = 'Edit Menu';
+        $model = Menu::findOrFail($menu);
+        return view('pages.menu.form', compact('model', 'title'));
     }
 
     /**
@@ -69,9 +88,9 @@ class MenuController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Menu $menu)
     {
-        $model = Menu::findOrFail($id);
+        $model = Menu::findOrFail($menu);
 
         $model->fill($request->all());
         $model->save();
@@ -83,9 +102,9 @@ class MenuController extends Controller
      * Delete.
      *
      */
-    public function delete($id)
+    public function destroy(Menu $menu)
     {
-        $model = Menu::findOrFail($id);
+        $model = Menu::findOrFail($menu);
         $model->delete();
 
         return redirect('menu')->with('success', 'Success');

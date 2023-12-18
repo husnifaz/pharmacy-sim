@@ -19,23 +19,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('indexMenu');
+    return redirect()->route('menu.index');
 });
 
 Route::get('/home', function () {
-    return redirect()->route('indexMenu');
+    return redirect()->route('menu.index');
 });
 
 Route::middleware(['verified:login', 'permission'])->group(function () {
-    Route::prefix('menu')->group(function () {
-        Route::get('/', [MenuController::class, 'index'])->name('indexMenu');
-        Route::get('/form', [MenuController::class, 'form']);
-        Route::post('/store', [MenuController::class, 'store']);
-        Route::get('edit/{id}', [MenuController::class, 'edit']);
-        Route::post('update/{id}', [MenuController::class, 'update']);
-        Route::get('delete/{id}', [MenuController::class, 'delete']);
-    });
-
+    Route::resource('menu', MenuController::class);
     Route::resource('employee', EmployeesController::class);
     Route::resource('user', UserController::class);
 });
