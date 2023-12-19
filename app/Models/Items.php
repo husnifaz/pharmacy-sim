@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class Items extends Model
 {
     use HasFactory;
-    protected $table='item';
 
     /**
      * The attributes that are mass assignable.
@@ -17,6 +16,9 @@ class Item extends Model
      */
     protected $fillable = [
         'name',
-        'generik',
+        'generic',
+        'price',
+        'med_unit_id',
+        'status'
     ];
 }

@@ -44,3 +44,7 @@ $('.btn-submit').click(function (e) {
 		}
 	})
 })
+
+$(".check-val").change(function(){
+  this.value = this.checked ? 1 : 0;
+});

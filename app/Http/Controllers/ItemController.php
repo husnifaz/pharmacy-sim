@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\Items;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ItemController extends Controller
 {
@@ -12,10 +13,28 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $model = Item::get();
-        return view('pages.item.index', compact('model'));
+        $title = 'Daftar Obat';
+
+        if ($request->ajax()) {
+            $data = Items::query();
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '<div class="btn-group" style="width: 100%; text-align: center">
+                    <form action="' . route('employee.destroy', $row) . '" method="post">
+                    ' . method_field('DELETE') . '
+                    ' . csrf_field() . '
+                      <a href="' . route('employee.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
+                    </form>
+                  </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('pages.item.index', compact('title'));
     }
 
     /**
@@ -25,7 +44,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return view('pages.item.form');
+        $title = 'Tambah Obat';
+        return view('pages.item.form', compact('title'));
     }
 
     /**
@@ -37,23 +57,15 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required',
             'name' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'price' => 'required',
         ]);
 
-        $model = new Employees();
+        $model = new Items();
         $model->fill($request->all());
-        $model->dob = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
-        if ($request->image) {
-            $imageName = 'employees_' . $model->nik . '.' . $request->image->getClientOriginalExtension();
-            $path = $request->image->storeAs('employees', $imageName);
-            $model->image_url = $path;
-        }
-
         $model->save();
 
-        return redirect()->route('employee.index')->with('success', 'Save Success');
+        return redirect()->route('item.index')->with('success', 'Save Success');
     }
 
     /**
@@ -62,10 +74,9 @@ class ItemController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function show(employees $employees)
+    public function show(Items $item)
     {
-        $model = Employees::find($employees)->first();
-        return view('pages.employees.show', compact('model'));
+
     }
 
     /**
@@ -74,10 +85,12 @@ class ItemController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function edit(employees $employees)
+    public function edit(Items $item)
     {
-        $model = Employees::find($employees)->first();
-        return view('pages.employees.form', compact('model'));
+        $title = 'Edit Data Obat';
+        $model = Items::find($item)->first();
+
+        return view('pages.item.form', compact('model', 'title'));
     }
 
     /**
@@ -87,29 +100,28 @@ class ItemController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, employees $employees)
+    public function update(Request $request, Items $item)
     {
         $request->validate([
-            'nik' => 'required',
-            'nama' => 'required',
+            'name' => 'required',
+            'price' => 'required',
         ]);
 
-        $employees->fill($request->all());
-        $employees->tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
-        $employees->save();
+        $item->fill($request->all());
+        $item->save();
 
-        return redirect('employee.index')->with('success', 'Update Success');
+        return redirect()->route('item.index')->with('success', 'Update Success');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage.  
      *
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function destroy(employees $employees)
+    public function destroy(Items $item)
     {
-        $employees->delete();
-        return redirect('employee.index')->with('success', 'Deleted');
+        $item->delete();
+        return redirect()->route('item.index')->with('success', 'Deleted');
     }
 }

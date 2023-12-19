@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\DishController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +29,6 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::resource('menu', MenuController::class);
     Route::resource('employee', EmployeesController::class);
     Route::resource('user', UserController::class);
+
     Route::resource('item', ItemController::class);
 });
