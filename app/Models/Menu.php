@@ -10,8 +10,6 @@ class Menu extends Model
     use HasFactory;
 
     protected $table = 'menu';
-    protected $primaryKey = 'id';
-
     public $timestamps = false;
 
     /**

@@ -65,7 +65,7 @@ class MenuController extends Controller
             $model->fill($request->all());
             $model->save();
 
-            return redirect('menu')->with('success', 'Save Success');
+            return redirect()->route('menu.index')->with('success', 'Save Success');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -79,7 +79,7 @@ class MenuController extends Controller
     public function edit(Menu $menu)
     {
         $title = 'Edit Menu';
-        $model = Menu::findOrFail($menu);
+        $model = $menu;
         return view('pages.menu.form', compact('model', 'title'));
     }
 
@@ -90,12 +90,15 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        $model = Menu::findOrFail($menu);
+        $request->validate([
+            'name' => 'required',
+            'order' => 'numeric|nullable'
+        ]);
+    
+        $menu->fill($request->all());
+        $menu->save();
 
-        $model->fill($request->all());
-        $model->save();
-
-        return redirect('menu')->with('success', 'Success');
+        return redirect()->route('menu.index')->with('success', 'Success');
     }
 
     /**
@@ -104,9 +107,7 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        $model = Menu::findOrFail($menu);
-        $model->delete();
-
-        return redirect('menu')->with('success', 'Success');
+        $menu->delete();
+        return redirect()->route('menu.index')->with('success', 'Success');
     }
 }

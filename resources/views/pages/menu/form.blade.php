@@ -9,6 +9,7 @@
       <div class="box-body">
         @if (isset($model))
         <form role="form" action="{{route('menu.update', $model)}}" method="post">
+          @method('PUT')
           @else
           <form role="form" action="{{route('menu.store')}}" method="post">
             @endif

@@ -1,12 +1,12 @@
 @section('title', $title)
 <h1>{{$title}}</h1>
-<!-- <ol class="breadcrumb">
+<ol class="breadcrumb">
   <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Home</a></li>
   @php
   $segments = '';
   @endphp
   @foreach(Request::segments() as $segment)
-  {{ $segments .= '/' . $segment; }}
-  <li><a href="{{$segments}}">{{ucfirst($segment)}}</a></li>
-  @endforeach -->
+  @php $segments .= '/' . $segment; @endphp
+  <li><a href="{{url($segments)}}">{{ucfirst($segment)}}</a></li>
+  @endforeach
 </ol>
