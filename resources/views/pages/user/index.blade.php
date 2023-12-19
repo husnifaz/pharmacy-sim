@@ -11,7 +11,7 @@
     <div class="box">
       <!-- /.box-header -->
       <div class="box-body">
-        <table class="table table-bordered table-hover" id="table-data">
+        <table class="table table-bordered table-hover" id="table-data" width="100%">
           <thead>
             <tr>
               <th width="3%">No</th>
@@ -36,7 +36,6 @@
       processing: true,
       serverSide: true,
       lengthChange: false,
-      ordering: false,
       ajax: "{{ route('user.index') }}",
       columns: [{
           data: 'DT_RowIndex',

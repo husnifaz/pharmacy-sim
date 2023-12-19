@@ -21,7 +21,7 @@ class MenuController extends Controller
             $data = Menu::with('menuParent');
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '<div class="btn-group">
+                    return '<div class="btn-group" style="width: 100%; text-align: center">
                     <form action="' . route('menu.destroy', $row) . '" method="post">
                     ' . method_field('DELETE') . '
                     ' . csrf_field() . '

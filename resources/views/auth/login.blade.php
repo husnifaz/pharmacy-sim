@@ -4,7 +4,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-  <a href="{{url('')}}"><b>About</b>Laravel</a>
+  <a href="{{url('')}}"><b>{{env('APP_LABEL')}}</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

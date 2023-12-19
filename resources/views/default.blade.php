@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
   <title>@yield('title')</title>
-  <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('css/font-awesome/css/font-awesome.min.css')}}">
   <!-- Ionicons -->
@@ -19,7 +19,8 @@
             apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{asset('css/skin-blue.min.css')}}">
 
-  <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}">
+  <!-- <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}"> -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.min.css')}}">
   <link rel="stylesheet" href="{{asset('assets/sweetalert2.css')}}">
 
@@ -68,7 +69,7 @@
   <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('js/main.js?v.2')}}"></script>
   @yield('script')
-  @if (session()->has('success'))
+  @if(session()->has('success'))
   <script>
     Swal.fire({
       title: "Success",
@@ -82,15 +83,25 @@
   {{session()->forget('success')}}
   @endif
 
-  @if (session()->has('error'))
+  @if(session()->has('error'))
   <script>
     Swal.fire({
-      title: "Something Wrong",
+      title: "Ada yang salah",
       icon: "error",
       text: "{{session()->get('error')}}"
     })
   </script>
   {{session()->forget('error')}}
+  @endif
+
+  @if($errors->any())
+  <script>
+    Swal.fire({
+      title: "Ada yang salah",
+      icon: "error",
+      text: "{{$errors->first()}}"
+    })
+  </script>
   @endif
 </body>
 @include('parts.modal')

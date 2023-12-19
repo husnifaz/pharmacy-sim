@@ -6,13 +6,13 @@
 
 @section('content')
 <div class="row">
+  <div class="col-xs-2 mb-10">
+    <a href="{{route('menu.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
+  </div>
   <div class="col-xs-12">
     <div class="box">
-      <div class="col-md-6 col-xs-6" style="margin-top: 10px;">
-        <a href="{{route('menu.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
-      </div>
       <div class="box-body">
-        <table class="table table-bordered table-hover" id="table-data">
+        <table class="table table-bordered table-hover" id="table-data" width="100%">
           <thead>
             <tr>
               <th width="5%">No</th>
@@ -39,7 +39,6 @@
       processing: true,
       serverSide: true,
       lengthChange: false,
-      ordering: false,
       ajax: "{{ route('menu.index') }}",
       columns: [{
           data: 'DT_RowIndex',
