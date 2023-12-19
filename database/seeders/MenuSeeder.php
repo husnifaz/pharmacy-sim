@@ -14,7 +14,7 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement(DB::raw("TRUNCATE menu"));
+        // DB::statement(DB::raw("TRUNCATE menu"));
 
         DB::table('menu')->insert([
             'name' => 'Pengguna',
