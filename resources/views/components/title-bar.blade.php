@@ -7,6 +7,6 @@
   @endphp
   @foreach(Request::segments() as $segment)
   @php $segments .= '/' . $segment; @endphp
-  <li><a href="{{url($segments)}}">{{ucfirst($segment)}}</a></li>
+  <li><a href="{{url($segments)}}">{{ucwords(str_replace('-', ' ', $segment))}}</a></li>
   @endforeach
 </ol>

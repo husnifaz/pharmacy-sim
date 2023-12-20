@@ -32,11 +32,6 @@ class Role extends Model
 
     public static function getListPermission()
     {
-        if (auth()->user()->role_admin) {
-            $modelMenu = Menu::get(DB::raw("concat(url, '*') as url"));
-            return $modelMenu->pluck('url')->toArray();
-        }
-
         $userId = auth()->user()->id;
         $modelRole = self::where('user_id', $userId)
             ->with('menu')->get();
