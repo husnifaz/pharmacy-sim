@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
   <div class="col-xs-2 mb-10">
-    <a href="{{route('item.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
+    <a href="{{route('unit-medicine.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
   </div>
   <div class="col-xs-12">
     <div class="box">
@@ -15,10 +15,8 @@
           <thead>
             <tr>
               <th width="5%">No</th>
-              <th>Nama Item</th>
-              <th>Generik</th>
-              <th>Harga</th>
-              <th>Satuan</th>
+              <th>Nama</th>
+              <th>Deskripsi</th>
               <th>Status</th>
               <th width="10%">Aksi</th>
             </tr>
@@ -38,7 +36,7 @@
       processing: true,
       serverSide: true,
       lengthChange: false,
-      ajax: "{{ route('item.index') }}",
+      ajax: "{{ route('unit-medicine.index') }}",
       columns: [{
           data: 'DT_RowIndex',
           name: 'DT_RowIndex',
@@ -50,16 +48,8 @@
           name: 'name'
         },
         {
-          data: 'generic',
-          name: 'generic'
-        },
-        {
-          data: 'price',
-          name: 'price'
-        },
-        {
-          data: 'unit_medicine.name',
-          defaultContent: ''
+          data: 'description',
+          name: 'description'
         },
         {
           data: 'status_label',

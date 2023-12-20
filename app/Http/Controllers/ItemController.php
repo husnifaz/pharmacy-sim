@@ -18,14 +18,14 @@ class ItemController extends Controller
         $title = 'Daftar Obat';
 
         if ($request->ajax()) {
-            $data = Items::query();
+            $data = Items::with('unitMedicine');
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<div class="btn-group" style="width: 100%; text-align: center">
-                    <form action="' . route('employee.destroy', $row) . '" method="post">
+                    <form action="' . route('item.destroy', $row) . '" method="post">
                     ' . method_field('DELETE') . '
                     ' . csrf_field() . '
-                      <a href="' . route('employee.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <a href="' . route('item.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
                       <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
                     </form>
                   </div>';
@@ -88,7 +88,7 @@ class ItemController extends Controller
     public function edit(Items $item)
     {
         $title = 'Edit Data Obat';
-        $model = Items::find($item)->first();
+        $model = $item;
 
         return view('pages.item.form', compact('model', 'title'));
     }
