@@ -4,6 +4,7 @@ use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MedicineUsesController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UnitMedicinesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,11 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::get('dropdown/med-unit', [UnitMedicinesController::class, 'dropdown'])->name('unit-medicine.dropdown');
 
     Route::resource('medicine-use', MedicineUsesController::class);
+    
+    Route::prefix('order')->group(function () {
+        Route::get('create', [OrderController::class, 'create'])->name('order.create');
+        Route::post('store', [OrderController::class, 'store'])->name('order.store');
+        Route::post('update', [OrderController::class, 'update'])->name('order.update');
+        Route::get('list-item', [OrderController::class, 'listItem'])->name('order.list-item');
+    });
 });

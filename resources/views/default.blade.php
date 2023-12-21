@@ -104,6 +104,5 @@
   </script>
   @endif
 </body>
-@include('parts.modal')
 
 </html>
