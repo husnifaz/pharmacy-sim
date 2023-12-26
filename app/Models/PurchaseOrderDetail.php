@@ -11,13 +11,17 @@ class PurchaseOrderDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+        'purchase_order_id',
         'item_id',
         'price',
         'qty',
+        'expired_date',
+        'batch_number',
+        'total'
     ];
 
     public function item()
     {
-        return $this->hasOne(ItemController::class, 'id', 'item_id');
+        return $this->hasOne(Items::class, 'id', 'item_id');
     }
 }

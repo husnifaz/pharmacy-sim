@@ -39,11 +39,13 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::get('dropdown/med-unit', [UnitMedicinesController::class, 'dropdown'])->name('unit-medicine.dropdown');
 
     Route::resource('medicine-use', MedicineUsesController::class);
-    
+
     Route::prefix('order')->group(function () {
         Route::get('create', [OrderController::class, 'create'])->name('order.create');
         Route::post('store', [OrderController::class, 'store'])->name('order.store');
         Route::post('update', [OrderController::class, 'update'])->name('order.update');
+        Route::get('edit', [OrderController::class, 'edit'])->name('order.edit');
         Route::get('list-item', [OrderController::class, 'listItem'])->name('order.list-item');
+        Route::post('store-detail', [OrderController::class, 'storeDetail'])->name('order.store-detail');
     });
 });

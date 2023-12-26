@@ -24,15 +24,59 @@
                   <label>Distributor</label>
                   <input type="text" class="form-control" name="distributor" value="{{isset($model) ? $model->distributor : old('distributor')}}">
                 </div>
+                <div class="form-group col-md-6">
+                  <label>Tanggal Order</label>
+                  <input type="text" class="form-control pull-right" id="datepicker" name="order_date" value="{{isset($model) ? $model->order_date : old('order_date')}}">
+                </div>
               </div>
-              <button class="btn btn-primary btn-modal" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i> Tambah Item</button>
-
+              @if (!isset($model))
               <input type="submit" class="btn btn-primary btn-submit" value="submit" />
+              @endif
           </form>
+          @if (isset($model))
+          <button class="btn btn-primary btn-modal" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i>&emsp;Tambah Item</button>
+          @endif
+      </div>
+      <div class="box-body">
+        <table class="table table-bordered" id="table-data" width="100%">
+          <thead>
+            <tr>
+              <th width="5%">No</th>
+              <th>Nama Obat</th>
+              <th>Harga</th>
+              <th>Jumlah</th>
+              <th width="10%">Tanggal Kadaluarsa</th>
+              <th>Nomor Batch</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($details as $key => $detail)
+            <tr>
+              <td>{{$key + 1}}</td>
+              <td>{{$detail->item->name}}</td>
+              <td>{{$detail->price}}</td>
+              <td>{{$detail->qty}}</td>
+              <td>{{$detail->expired_date}}</td>
+              <td>{{$detail->batch_number}}</td>
+              <td>{{$detail->total}}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
+<style>
+  .table-bordered th {
+    font-size: 13px;
+  }
+
+  .table-bordered td {
+    font-size: 12px;
+  }
+</style>
 @endsection
 @include('pages.purchase-order.modal-order')
 @section('script')
@@ -81,6 +125,8 @@
     $(".price-item").val('')
     $(".total-item").val('')
     $(".qty-item").val('')
+    $(".batch-item").val('')
+    $(".expired-item").val('')
     $(".itemId").select2('val', '')
   })
 </script>

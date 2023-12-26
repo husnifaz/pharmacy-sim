@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Items;
+use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderDetail;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -57,15 +59,18 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'price' => 'required',
+            'number' => 'required',
+            'distributor' => 'required',
+            'order_date' => 'required',
         ]);
 
-        $model = new Items();
+        $model = new PurchaseOrder();
         $model->fill($request->all());
+        $model->order_date = \Carbon\Carbon::parse($request->order_date)->format('Y-m-d');
+        $model->created_by = auth()->user()->id;
         $model->save();
 
-        return redirect()->route('item.index')->with('success', 'Save Success');
+        return redirect()->route('order.edit', ['order' => $model->id])->with('success', 'Save Success');
     }
 
     /**
@@ -76,7 +81,6 @@ class OrderController extends Controller
      */
     public function show(Items $item)
     {
-
     }
 
     /**
@@ -85,12 +89,13 @@ class OrderController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function edit(Items $item)
+    public function edit(Request $request)
     {
-        $title = 'Edit Data Obat';
-        $model = $item;
+        $title = 'Detail Pembelian barang';
+        $model = PurchaseOrder::find($request->order)->first();
+        $details = PurchaseOrderDetail::where('purchase_order_id', $request->order)->with('item')->get();
 
-        return view('pages.item.form', compact('model', 'title'));
+        return view('pages.purchase-order.form', compact('model', 'title', 'details'));
     }
 
     /**
@@ -114,7 +119,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.  
+     * Remove the specified resource from storage.
      *
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
@@ -139,5 +144,26 @@ class OrderController extends Controller
         $model = $model->get();
 
         return response()->json($model);
+    }
+
+    /**
+     * Store data item detail.
+     *
+     */
+    public function storeDetail(Request $request)
+    {
+        $request->validate([
+            'item_id' => 'required',
+            'qty' => 'required',
+            'total' => 'required',
+            'expired_date' => 'required',
+        ]);
+
+        $model = new PurchaseOrderDetail();
+        $model->fill($request->all());
+        $model->expired_date = \Carbon\Carbon::parse($request->expired_date)->format('Y-m-d');
+        $model->save();
+
+        return redirect()->route('order.edit', ['order' => $model->purchase_order_id])->with('success', 'Tambah Barang Sukses');
     }
 }
