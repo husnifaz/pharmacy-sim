@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\OrderStock;
 use App\Models\Items;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
@@ -17,18 +18,23 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $title = 'Daftar Obat';
+        $title = 'Daftar Order Barang';
 
         if ($request->ajax()) {
-            $data = Items::with('unitMedicine');
+            $data = PurchaseOrder::query();
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
+                    $button = '';
+                    $button .= '<a href="' . route('order.show', ['order' => $row->id]) . '" class="btn btn-success btn-xs"><span class="fa fa-external-link"></span></a>';
+                    if ($row->status != 2) {
+                        $button .= '<a href="' . route('order.edit', ['order' => $row->id]) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>';
+                        $button .= '<button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></button>';
+                    }
                     return '<div class="btn-group" style="width: 100%; text-align: center">
-                    <form action="' . route('item.destroy', $row) . '" method="post">
+                    <form action="' . route('order.destroy', $row) . '" method="post">
                     ' . method_field('DELETE') . '
                     ' . csrf_field() . '
-                      <a href="' . route('item.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
-                      <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
+                    ' . $button . '
                     </form>
                   </div>';
                 })
@@ -36,7 +42,7 @@ class OrderController extends Controller
                 ->make(true);
         }
 
-        return view('pages.item.index', compact('title'));
+        return view('pages.purchase-order.index', compact('title'));
     }
 
     /**
@@ -47,7 +53,8 @@ class OrderController extends Controller
     public function create()
     {
         $title = 'Tambah Pembelian Barang';
-        return view('pages.purchase-order.form', compact('title'));
+        $details = [];
+        return view('pages.purchase-order.form', compact('title', 'details'));
     }
 
     /**
@@ -79,8 +86,14 @@ class OrderController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function show(Items $item)
+    public function show(Request $request)
     {
+        $title = 'Detail Order';
+        $model = PurchaseOrder::find($request->order)->with('purchaseOrderDetails', 'purchaseOrderDetails.item')->first();
+
+        $model->append('created_by_label');
+
+        return view('pages.purchase-order.show', compact('model', 'title'));
     }
 
     /**
@@ -136,7 +149,7 @@ class OrderController extends Controller
     public function listItem(Request $request)
     {
         $term = $request->get('query', false);
-        $model = Items::select('id', 'name as text', 'price');
+        $model = Items::select('id', 'name as text', 'order_price');
         if ($term) {
             $model = $model->where('name', 'like', "%$term%");
         }
@@ -165,5 +178,37 @@ class OrderController extends Controller
         $model->save();
 
         return redirect()->route('order.edit', ['order' => $model->purchase_order_id])->with('success', 'Tambah Barang Sukses');
+    }
+
+    /**
+     * Delete child
+     *
+     */
+    public function deleteChild(Request $request)
+    {
+        $model = PurchaseOrderDetail::find($request->id);
+        if ($model) {
+            $model->delete();
+        }
+
+        return redirect()->route('order.edit', ['order' => $model->purchase_order_id])->with('success', 'Delete item success');
+    }
+
+    /**
+     * finalization order
+     *
+     */
+    public function finishOrder(Request $request)
+    {
+        $model = PurchaseOrder::find($request->id);
+        $model->fill($request->all());
+        $model->status = 2;
+        $model->save();
+
+        $model->purchaseOrderDetails;
+
+        OrderStock::dispatch($model);
+
+        return redirect()->route('order.index')->with('success', 'Order selesai');
     }
 }

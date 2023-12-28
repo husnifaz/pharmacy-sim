@@ -24,7 +24,8 @@ class PurchaseOrder extends Model
     {
         return [
             0 => 'Gagal',
-            1 => 'Selesai',
+            1 => 'Draf',
+            2 => 'Selesai',
         ];
     }
 
@@ -32,5 +33,18 @@ class PurchaseOrder extends Model
     {
         $listStatus = $this->listStatus();
         return (isset($this->status) ? $listStatus[$this->status] : '');
+    }
+
+    public function purchaseOrderDetails()
+    {
+        return $this->hasMany(PurchaseOrderDetail::class, 'purchase_order_id', 'id');
+    }
+
+    protected function getCreatedByAttribute()
+    {
+        $user = User::find($this->attributes['created_by'])->first();
+        if ($user) {
+            return $user->name;
+        }
     }
 }

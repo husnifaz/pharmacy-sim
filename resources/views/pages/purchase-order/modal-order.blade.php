@@ -9,7 +9,7 @@
 					<h4 class="modal-title">Default Modal</h4>
 				</div>
 				<div class="modal-body">
-					<input type="hidden" name="purchase_order_id" value="{{$model->id}}">
+					<input type="hidden" name="purchase_order_id" value="{{isset($model) ? $model->id : null}}">
 					<div class="row">
 						<div class="form-group col-md-12">
 							<label>Item</label>
@@ -25,7 +25,7 @@
 						</div>
 						<div class="form-group col-md-12">
 							<label>Tanggal Kadaluarsa</label>
-							<input type="text" class="form-control expired-item" id="datepicker" name="expired_date">
+							<input type="text" class="form-control expired-item" id="datepicker-expired" name="expired_date">
 						</div>
 						<div class="form-group col-md-12">
 							<label>Nomor Batch</label>

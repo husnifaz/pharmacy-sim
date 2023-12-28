@@ -41,11 +41,16 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::resource('medicine-use', MedicineUsesController::class);
 
     Route::prefix('order')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('order.index');
         Route::get('create', [OrderController::class, 'create'])->name('order.create');
         Route::post('store', [OrderController::class, 'store'])->name('order.store');
+        Route::get('show', [OrderController::class, 'show'])->name('order.show');
         Route::post('update', [OrderController::class, 'update'])->name('order.update');
         Route::get('edit', [OrderController::class, 'edit'])->name('order.edit');
+        Route::post('destroy', [OrderController::class, 'destroy'])->name('order.destroy');
         Route::get('list-item', [OrderController::class, 'listItem'])->name('order.list-item');
         Route::post('store-detail', [OrderController::class, 'storeDetail'])->name('order.store-detail');
+        Route::post('delete-child', [OrderController::class, 'deleteChild'])->name('order.delete-child');
+        Route::post('finish-order', [OrderController::class, 'finishOrder'])->name('order.finish-order');
     });
 });

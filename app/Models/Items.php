@@ -19,7 +19,8 @@ class Items extends Model
         'generic',
         'price',
         'med_unit_id',
-        'status'
+        'status',
+        'order_price'
     ];
 
     public function unitMedicine()
