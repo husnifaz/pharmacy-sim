@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Jobs\OrderStock;
 use App\Models\Items;
+use App\Models\ItemStock;
+use App\Models\MedicineUses;
+use App\Models\PrescriptionDetails;
+use App\Models\Prescriptions;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class OrderController extends Controller
+class PrescriptionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,20 +22,20 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $title = 'Daftar Order Barang';
+        $title = 'Daftar Penjualan Obat';
 
         if ($request->ajax()) {
-            $data = PurchaseOrder::query();
+            $data = Prescriptions::query();
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $button = '';
-                    $button .= '<a href="' . route('order.show', ['order' => $row->id]) . '" class="btn btn-success btn-xs"><span class="fa fa-external-link"></span></a>';
+                    $button .= '<a href="' . route('prescription.show', ['order' => $row->id]) . '" class="btn btn-success btn-xs"><span class="fa fa-external-link"></span></a>';
                     if ($row->status != 2) {
-                        $button .= '<a href="' . route('order.edit', ['order' => $row->id]) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>';
+                        $button .= '<a href="' . route('prescription.edit', ['order' => $row->id]) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>';
                         $button .= '<button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></button>';
                     }
                     return '<div class="btn-group" style="width: 100%; text-align: center">
-                    <form action="' . route('order.destroy', $row) . '" method="post">
+                    <form action="' . route('prescription.destroy', $row) . '" method="post">
                     ' . method_field('DELETE') . '
                     ' . csrf_field() . '
                     ' . $button . '
@@ -42,7 +46,7 @@ class OrderController extends Controller
                 ->make(true);
         }
 
-        return view('pages.purchase-order.index', compact('title'));
+        return view('pages.prescription.index', compact('title'));
     }
 
     /**
@@ -52,9 +56,9 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $title = 'Tambah Pembelian Barang';
+        $title = 'Tambah Penjualan Obat';
         $details = [];
-        return view('pages.purchase-order.form', compact('title', 'details'));
+        return view('pages.prescription.form', compact('title', 'details'));
     }
 
     /**
@@ -66,18 +70,16 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'number' => 'required',
-            'distributor' => 'required',
             'order_date' => 'required',
         ]);
 
-        $model = new PurchaseOrder();
+        $model = new Prescriptions();
         $model->fill($request->all());
-        $model->order_date = \Carbon\Carbon::parse($request->order_date)->format('Y-m-d');
+        $model->number = Prescriptions::generateNumber();
         $model->created_by = auth()->user()->id;
         $model->save();
 
-        return redirect()->route('order.edit', ['order' => $model->id])->with('success', 'Save Success');
+        return redirect()->route('prescription.edit', ['order' => $model->id])->with('success', 'Save Success');
     }
 
     /**
@@ -89,9 +91,11 @@ class OrderController extends Controller
     public function show(Request $request)
     {
         $title = 'Detail Order';
-        $model = PurchaseOrder::where('id', $request->order)->with('purchaseOrderDetails', 'purchaseOrderDetails.item', 'user')->first();
+        $model = PurchaseOrder::find($request->order)->with('purchaseOrderDetails', 'purchaseOrderDetails.item')->first();
 
-        return view('pages.purchase-order.show', compact('model', 'title'));
+        $model->append('created_by_label');
+
+        return view('pages.prescription.show', compact('model', 'title'));
     }
 
     /**
@@ -102,11 +106,11 @@ class OrderController extends Controller
      */
     public function edit(Request $request)
     {
-        $title = 'Detail Pembelian barang';
-        $model = PurchaseOrder::find($request->order);
-        $details = PurchaseOrderDetail::where('purchase_order_id', $request->order)->with('item')->get();
+        $title = 'Detail Penjualan Barang';
+        $model = Prescriptions::find($request->order);
+        $details = PrescriptionDetails::where('prescription_id', $request->order)->get();
 
-        return view('pages.purchase-order.form', compact('model', 'title', 'details'));
+        return view('pages.prescription.form', compact('model', 'title', 'details'));
     }
 
     /**
@@ -147,7 +151,49 @@ class OrderController extends Controller
     public function listItem(Request $request)
     {
         $term = $request->get('query', false);
-        $model = Items::select('id', 'name as text', 'order_price');
+
+        $model = Items::select('id', 'name as text', 'price');
+        if ($term) {
+            $model = $model->where('name', 'like', "%$term%");
+        }
+        $model = $model->get();
+
+        return response()->json($model);
+    }
+
+    /**
+     * dropdown obat
+     */
+    public function listItemStock(Request $request)
+    {
+        $item = $request->get('item_id', false);
+        $ed = $request->get('expired_date', false);
+        $batch = $request->get('batch_number', false);
+
+        $model = ItemStock::select('id', 'expired_date', 'batch_number');
+        if ($item) {
+            $model = $model->where('item_id', $item);
+        }
+        if ($ed) {
+            $model = $model->where('expired_date', $ed);
+        }
+        if ($batch) {
+            $model = $model->where('batch_number', $batch);
+        }
+
+        $model = $model->get();
+
+        return response()->json($model);
+    }
+
+    /**
+     * dropdown obat
+     */
+    public function listMedicineUses(Request $request)
+    {
+        $term = $request->get('query', false);
+
+        $model = MedicineUses::select('id', 'name AS text');
         if ($term) {
             $model = $model->where('name', 'like', "%$term%");
         }
@@ -167,15 +213,15 @@ class OrderController extends Controller
             'item_id' => 'required',
             'qty' => 'required',
             'total' => 'required',
-            'expired_date' => 'required',
+            'item_stock_id' => 'required',
         ]);
 
-        $model = new PurchaseOrderDetail();
+        $model = new PrescriptionDetails();
         $model->fill($request->all());
-        $model->expired_date = \Carbon\Carbon::parse($request->expired_date)->format('Y-m-d');
+        $model->created_by = auth()->user()->id;
         $model->save();
 
-        return redirect()->route('order.edit', ['order' => $model->purchase_order_id])->with('success', 'Tambah Barang Sukses');
+        return redirect()->route('prescription.edit', ['order' => $model->prescription_id])->with('success', 'Tambah Barang Sukses');
     }
 
     /**
@@ -189,7 +235,7 @@ class OrderController extends Controller
             $model->delete();
         }
 
-        return redirect()->route('order.edit', ['order' => $model->purchase_order_id])->with('success', 'Delete item success');
+        return redirect()->route('prescription.edit', ['order' => $model->purchase_order_id])->with('success', 'Delete item success');
     }
 
     /**
@@ -207,6 +253,6 @@ class OrderController extends Controller
 
         OrderStock::dispatch($model);
 
-        return redirect()->route('order.index')->with('success', 'Order selesai');
+        return redirect()->route('prescription.index')->with('success', 'Order selesai');
     }
 }

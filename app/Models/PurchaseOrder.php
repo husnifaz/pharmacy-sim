@@ -13,7 +13,8 @@ class PurchaseOrder extends Model
         'number',
         'distributor',
         'status',
-        'order_date'
+        'order_date',
+        'created_by'
     ];
 
     protected $appends = [
@@ -33,6 +34,11 @@ class PurchaseOrder extends Model
     {
         $listStatus = $this->listStatus();
         return (isset($this->status) ? $listStatus[$this->status] : '');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
     }
 
     public function purchaseOrderDetails()

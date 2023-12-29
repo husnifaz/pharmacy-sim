@@ -53,7 +53,9 @@
         },
         {
           data: 'status_label',
-          defaultContent: ''
+          name: 'status',
+          defaultContent: '',
+          searchable: false
         },
         {
           data: 'action',

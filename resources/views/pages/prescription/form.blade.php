@@ -8,32 +8,35 @@
     <div class="box">
       <div class="box-body">
         @if (isset($model))
-        <form action="{{route('order.update', $model->id)}}" id="form-order" method="post">
+        <form action="{{route('prescription.update', $model->id)}}" id="form-order" method="post">
           @method('PUT')
           @else
-          <form action="{{route('order.store')}}" method="post">
+          <form action="{{route('prescription.store')}}" method="post">
             @endif
             @csrf
             <div class="row">
-              <div class="form-group col-md-6">
-                <label>Nomor Order</label>
-                <input type="text" class="form-control" name="number" value="{{isset($model) ? $model->number : old('number')}}">
-              </div>
-              <div class="form-group col-md-6">
-                <label>Distributor</label>
-                <input type="text" class="form-control" name="distributor" value="{{isset($model) ? $model->distributor : old('distributor')}}">
-              </div>
               <div class="form-group col-md-6">
                 <label>Tanggal Order</label>
                 <input type="text" class="form-control pull-right" id="datepicker-order" name="order_date" value="{{isset($model) ? $model->order_date : old('order_date')}}">
               </div>
               @if (isset($model))
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
+                <label style="margin-bottom: 15px;">Nomor Penjualan</label>
+                <br>
+                <p>{{$model->number}}</p>
+              </div>
+              <div class="form-group col-md-3">
                 <label style="margin-bottom: 15px;">Status</label>
                 <br>
-                <p class="label bg-green" style="font-size: 14px;">{{$model->status_label}}</p>
+                <p class="label {{$model->status_bg}}" style="font-size: 14px;">{{$model->status_label}}</p>
               </div>
               @endif
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>Remarks</label>
+                <textarea class="form-control" name="remarks" rows="5">{{isset($model) ? $model->remarks : old('remarks')}}</textarea>
+              </div>
             </div>
             @if (!isset($model))
             <input type="submit" class="btn btn-primary btn-submit" value="submit" />
@@ -66,17 +69,17 @@
                 <td>{{$detail->batch_number}}</td>
                 <td>{{$detail->total}}</td>
                 <td class="text-center">
-                  <form action="{{route('order.delete-child', ['id' => $detail->id])}}" method="post" style="margin-bottom: 0;">
+                  <form action="{{route('prescription.delete-child', ['id' => $detail->id])}}" method="post" style="margin-bottom: 0;">
                     @csrf
                     <button class="btn btn-danger btn-sm delete-child"><i class="fa fa-trash"></i></button>
                   </form>
                 </td>
               </tr>
               @endforeach
-            </tbody>  
+            </tbody>
           </table>
           @if (isset($model))
-          <form action="{{route('order.finish-order', ['id' => $model->id])}}" method="post">
+          <form action="{{route('prescription.finish-prescription', ['id' => $model->id])}}" method="post">
             @csrf
             <button class="btn btn-primary pull-right btn-submit" id="finish-order"><i class="fa fa-check"></i>&emsp;Selesaikan Order</button>
           </form>
@@ -94,12 +97,12 @@
     }
   </style>
   @endsection
-  @include('pages.purchase-order.modal-order')
+  @include('pages.prescription.modal-order')
   @section('script')
   <script>
-    $(".itemId").select2({
+    $(".select-item").select2({
       ajax: {
-        url: "{{route('order.list-item')}}", // Replace with your actual endpoint URL
+        url: "{{route('prescription.list-item')}}", // Replace with your actual endpoint URL
         dataType: 'json',
         delay: 250,
         data: function(params) {
@@ -116,16 +119,92 @@
       },
       templateSelection: function(data, container) {
         // Add custom attributes to the <option> tag for the selected option
-        $(data.element).attr('data-price', data.order_price);
+        $(data.element).attr('data-price', data.price);
         return data.text;
       },
       placeholder: 'Ketik nama obat',
       minimumInputLength: 1
     })
 
-    $(".itemId").on('change', function() {
+    $(".select-item").on('change', function() {
       let price = $(this).find(':selected').data('price')
+      let itemId = $(this).find(':selected').val()
+
       $(".price-item ").val(price)
+      $(".select-expired").prop('disabled', false)
+
+      $(".select-expired").select2({
+        ajax: {
+          url: "{{route('prescription.list-item-stock')}}", // Replace with your actual endpoint URL
+          dataType: 'json',
+          data: function(params) {
+            return {
+              item_id: itemId, // Search term
+            };
+          },
+          processResults: function(data, params) {
+            return {
+              results: $.map(data, function(item) {
+                return {
+                  id: item.expired_date, // Use custom_id as the id
+                  text: item.expired_date // Use custom_text as the text
+                };
+              })
+            };
+          },
+          cache: true
+        }
+      })
+    })
+
+    $(".select-expired").on('change', function() {
+      let ed = $(this).find(':selected').val()
+      console.log(ed)
+      $(".select-batch").prop('disabled', false)
+      $(".select-batch").select2({
+        ajax: {
+          url: "{{route('prescription.list-item-stock')}}", // Replace with your actual endpoint URL
+          dataType: 'json',
+          data: function(params) {
+            return {
+              item_id: $('.select-item').find(':selected').val(), // Search term
+              expired_date: ed
+            };
+          },
+          processResults: function(data, params) {
+            return {
+              results: $.map(data, function(item) {
+                return {
+                  id: item.id, // Use custom_id as the id
+                  text: item.batch_number // Use custom_text as the text
+                };
+              })
+            };
+          },
+          cache: true
+        }
+      })
+    })
+
+    $(".select-medicine-uses").select2({
+      ajax: {
+        url: "{{route('prescription.list-medicine-uses')}}", // Replace with your actual endpoint URL
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+          return {
+            query: params.term, // Search term
+          };
+        },
+        processResults: function(data, params) {
+          return {
+            results: data,
+          };
+        },
+        cache: true
+      },
+      placeholder: 'Ketik aturan pakai',
+      minimumInputLength: 1
     })
 
     $(".qty-item").on('keyup', function() {
@@ -143,7 +222,9 @@
       $(".qty-item").val('')
       $(".batch-item").val('')
       $(".expired-item").val('')
-      $(".itemId").val('').trigger('change')
+      $(".select-item").val('').trigger('change')
+      $(".select-expired").val('').trigger('change')
+      $(".select-batch").val('').trigger('change')
     })
 
     $('#datepicker-order').datepicker({

@@ -28,7 +28,7 @@
 					</div>
 					<div class="col-md-3">
 						<label>Dibuat Oleh</label>
-						<p></p>
+						<p>{{$model->created_by_label}}</p>
 					</div>
 				</div>
 			</div>

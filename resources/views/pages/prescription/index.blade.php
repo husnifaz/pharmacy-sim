@@ -1,23 +1,25 @@
 @extends('default')
+
 @section('content_header')
 <x-title-bar title="{{$title}}" />
 @endsection
+
 @section('content')
 <div class="row">
   <div class="col-xs-2 mb-10">
-    <a href="{{route('medicine-use.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
+    <a href="{{route('prescription.create')}}" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>&emsp;Tambah Data</a>
   </div>
   <div class="col-xs-12">
     <div class="box">
-      <!-- /.box-header -->
       <div class="box-body">
         <table class="table table-bordered table-hover" id="table-data" width="100%">
           <thead>
             <tr>
               <th width="5%">No</th>
-              <th>Nama</th>
-              <th>Deskripsi</th>
+              <th>Nomor Penjualan</th>
+              <th>Tanggal Order</th>
               <th>Status</th>
+              <th>User Input</th>
               <th width="10%">Aksi</th>
             </tr>
           </thead>
@@ -36,7 +38,7 @@
       processing: true,
       serverSide: true,
       lengthChange: false,
-      ajax: "{{ route('medicine-use.index') }}",
+      ajax: "{{ route('prescription.index') }}",
       columns: [{
           data: 'DT_RowIndex',
           name: 'DT_RowIndex',
@@ -44,18 +46,22 @@
           searchable: false
         },
         {
-          data: 'name',
-          name: 'name'
+          data: 'number',
+          name: 'number'
         },
         {
-          data: 'description',
-          name: 'description'
+          data: 'order_date',
+          name: 'order_date'
         },
         {
           data: 'status_label',
           name: 'status',
-          defaultContent: '',
-          searchable: false
+          defaultContent: ''
+        },
+        {
+          data: 'created_by',
+          name: 'created_by',
+          defaultContent: ''
         },
         {
           data: 'action',

@@ -26,7 +26,11 @@
                     <input type="text" class="form-control input-sm" name="generic" value="{{isset($model) ? $model->generic : old('generic')}}">
                   </div>
                   <div class="form-group">
-                    <label>Harga</label>
+                    <label>Harga Beli</label>
+                    <input type="number" class="form-control input-sm" name="order_price" value="{{isset($model) ? $model->order_price : old('order_price')}}">
+                  </div>
+                  <div class="form-group">
+                    <label>Harga Jual</label>
                     <input type="number" class="form-control input-sm" name="price" value="{{isset($model) ? $model->price : old('price')}}">
                   </div>
                   <div class="form-group">
@@ -71,15 +75,11 @@
         processResults: function(data, params) {
           return {
             results: data.data,
-            pagination: {
-              more: (params.page * 30) < data.data.total_count
-            }
           };
         },
         cache: true
       },
       placeholder: 'Cari Satuan Obat',
-      minimumInputLength: 1
     })
   })
 </script>

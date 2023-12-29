@@ -59,6 +59,7 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required',
+            'order_price' => 'required'
         ]);
 
         $model = new Items();

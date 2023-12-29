@@ -17,7 +17,8 @@
               <th width="5%">No</th>
               <th>Nama Item</th>
               <th>Generik</th>
-              <th>Harga</th>
+              <th>Harga Beli</th>
+              <th>Harga Jual</th>
               <th>Satuan</th>
               <th>Status</th>
               <th width="10%">Aksi</th>
@@ -52,6 +53,10 @@
         {
           data: 'generic',
           name: 'generic'
+        },
+        {
+          data: 'order_price',
+          name: 'order_price'
         },
         {
           data: 'price',
