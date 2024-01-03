@@ -18,31 +18,13 @@ class Items extends Model
         'name',
         'generic',
         'price',
-        'med_unit_id',
-        'status',
-        'order_price'
+        'order_price',
+        'medicine_unit_id',
+        'status'
     ];
 
-    public function unitMedicine()
+    public function medicineUnit()
     {
-        return $this->hasOne(UnitMedicines::class, 'id', 'med_unit_id');
-    }
-
-    protected $appends = [
-        'status_label'
-    ];
-
-    public function listStatus()
-    {
-        return [
-            1 => 'Aktif',
-            0 => 'Non Aktif'
-        ];
-    }
-
-    protected function getStatusLabelAttribute()
-    {
-        $listStatus = $this->listStatus();
-        return (isset($this->status) ? $listStatus[$this->status] : '');
+        return $this->hasOne(MedicineUnit::class, 'id', 'medicine_unit_id');
     }
 }

@@ -8,10 +8,10 @@
     <div class="box">
       <div class="box-body">
         @if (isset($model))
-        <form action="{{route('unit-medicine.update', $model)}}" method="post">
+        <form action="{{route('medicine-unit.update', $model)}}" method="post">
           @method('PUT')
           @else
-          <form action="{{route('unit-medicine.store')}}" method="post">
+          <form action="{{route('medicine-unit.store')}}" method="post">
             @endif
             @csrf
             <div class="row">
@@ -19,11 +19,7 @@
                 <div class="box-body col-md-8">
                   <div class="form-group">
                     <label>Nama Satuan</label>
-                    <input type="text" class="form-control input-sm" name="name" value="{{isset($model) ? $model->name : old('name')}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Deskripsi</label>
-                    <input type="text" class="form-control input-sm" name="description" value="{{isset($model) ? $model->description : old('description')}}">
+                    <input type="text" class="form-control" name="name" value="{{isset($model) ? $model->name : old('name')}}">
                   </div>
                   <div class="form-group">
                     <div class="radio">

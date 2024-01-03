@@ -9,7 +9,6 @@ class Menu extends Model
 {
     use HasFactory;
 
-    protected $table = 'menu';
     public $timestamps = false;
 
     /**
@@ -34,7 +33,7 @@ class Menu extends Model
     {
         if ($user->role_admin) {
             $modelParent = self::orderBy('order')->whereNull('parent_id')->get();
-            $modelParent->map(function($query) {
+            $modelParent->map(function ($query) {
                 $query['child'] = self::orderBy('order')->where('parent_id', $query->id)->get();
             });
         } else {

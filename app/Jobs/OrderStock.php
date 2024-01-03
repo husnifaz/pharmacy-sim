@@ -36,7 +36,7 @@ class OrderStock implements ShouldQueue
                 ->first();
 
             if ($model) {
-                $model->increment('qty', $detail->qty);
+                $model->increment('quantity', $detail->quantity);
                 $model->save();
             } else {
                 $model = new ItemStock();
@@ -44,6 +44,5 @@ class OrderStock implements ShouldQueue
                 $model->save();
             }
         }
-
     }
 }

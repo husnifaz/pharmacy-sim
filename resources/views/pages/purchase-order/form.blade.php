@@ -17,21 +17,21 @@
             <div class="row">
               <div class="form-group col-md-6">
                 <label>Nomor Order</label>
-                <input type="text" class="form-control" name="number" value="{{isset($model) ? $model->number : old('number')}}">
-              </div>
-              <div class="form-group col-md-6">
-                <label>Distributor</label>
-                <input type="text" class="form-control" name="distributor" value="{{isset($model) ? $model->distributor : old('distributor')}}">
+                <input type="text" class="form-control" name="number" value="{{isset($model) ? $model->number : old('number')}}" {{isset($model) ? 'disabled' : ''}}>
               </div>
               <div class="form-group col-md-6">
                 <label>Tanggal Order</label>
-                <input type="text" class="form-control pull-right" id="datepicker-order" name="order_date" value="{{isset($model) ? $model->order_date : old('order_date')}}">
+                <input type="date" class="form-control pull-right" name="order_date" value="{{isset($model) ? $model->order_date : old('order_date')}}" {{isset($model) ? 'disabled' : ''}}>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Remarks</label>
+                <textarea class="form-control" name="remarks" rows="5" {{isset($model) ? 'disabled' : ''}}>{{isset($model) ? $model->remarks : old('remarks')}}</textarea>
               </div>
               @if (isset($model))
               <div class="form-group col-md-6">
                 <label style="margin-bottom: 15px;">Status</label>
                 <br>
-                <p class="label bg-green" style="font-size: 14px;">{{$model->status_label}}</p>
+                <p class="label bg-blue" style="font-size: 14px;">{{$model->status_label}}</p>
               </div>
               @endif
             </div>
@@ -60,8 +60,8 @@
               <tr>
                 <td>{{$key + 1}}</td>
                 <td>{{$detail->item->name}}</td>
-                <td>{{$detail->price}}</td>
-                <td>{{$detail->qty}}</td>
+                <td>{{$detail->order_price}}</td>
+                <td>{{$detail->quantity}}</td>
                 <td>{{$detail->expired_date}}</td>
                 <td>{{$detail->batch_number}}</td>
                 <td>{{$detail->total}}</td>
@@ -73,7 +73,7 @@
                 </td>
               </tr>
               @endforeach
-            </tbody>  
+            </tbody>
           </table>
           @if (isset($model))
           <form action="{{route('order.finish-order', ['id' => $model->id])}}" method="post">
@@ -144,16 +144,6 @@
       $(".batch-item").val('')
       $(".expired-item").val('')
       $(".itemId").val('').trigger('change')
-    })
-
-    $('#datepicker-order').datepicker({
-      autoclose: true,
-      format: 'yyyy-mm-dd',
-    })
-
-    $('#datepicker-expired').datepicker({
-      autoclose: true,
-      format: 'yyyy-mm-dd',
     })
 
     $('.delete-child').on('click', function(e) {

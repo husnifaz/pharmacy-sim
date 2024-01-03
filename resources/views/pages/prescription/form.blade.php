@@ -15,17 +15,17 @@
             @endif
             @csrf
             <div class="row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-4">
                 <label>Tanggal Order</label>
-                <input type="text" class="form-control pull-right" id="datepicker-order" name="order_date" value="{{isset($model) ? $model->order_date : old('order_date')}}">
+                <input type="date" class="form-control pull-right" name="order_date" value="{{isset($model) ? $model->order_date : old('order_date')}}" {{isset($model) ? 'disabled' : ''}}>
               </div>
               @if (isset($model))
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-4">
                 <label style="margin-bottom: 15px;">Nomor Penjualan</label>
                 <br>
                 <p>{{$model->number}}</p>
               </div>
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-4">
                 <label style="margin-bottom: 15px;">Status</label>
                 <br>
                 <p class="label {{$model->status_bg}}" style="font-size: 14px;">{{$model->status_label}}</p>
@@ -33,9 +33,9 @@
               @endif
             </div>
             <div class="row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-12">
                 <label>Remarks</label>
-                <textarea class="form-control" name="remarks" rows="5">{{isset($model) ? $model->remarks : old('remarks')}}</textarea>
+                <textarea class="form-control" name="remarks" rows="5" {{isset($model) ? 'disabled' : ''}}>{{isset($model) ? $model->remarks : old('remarks')}}</textarea>
               </div>
             </div>
             @if (!isset($model))
@@ -64,7 +64,7 @@
                 <td>{{$key + 1}}</td>
                 <td>{{$detail->item->name}}</td>
                 <td>{{$detail->price}}</td>
-                <td>{{$detail->qty}}</td>
+                <td>{{$detail->quantity}}</td>
                 <td>{{$detail->expired_date}}</td>
                 <td>{{$detail->batch_number}}</td>
                 <td>{{$detail->total}}</td>
@@ -159,7 +159,6 @@
 
     $(".select-expired").on('change', function() {
       let ed = $(this).find(':selected').val()
-      console.log(ed)
       $(".select-batch").prop('disabled', false)
       $(".select-batch").select2({
         ajax: {
@@ -176,7 +175,7 @@
               results: $.map(data, function(item) {
                 return {
                   id: item.id, // Use custom_id as the id
-                  text: item.batch_number // Use custom_text as the text
+                  text: item.batch_number,
                 };
               })
             };
@@ -184,6 +183,11 @@
           cache: true
         }
       })
+    })
+
+    $(".select-batch").on('change', function() {
+      let stockId = $(this).find(':selected').val()
+      $("#stock_id").val(stockId)
     })
 
     $(".select-medicine-uses").select2({
@@ -202,9 +206,7 @@
           };
         },
         cache: true
-      },
-      placeholder: 'Ketik aturan pakai',
-      minimumInputLength: 1
+      }
     })
 
     $(".qty-item").on('keyup', function() {
@@ -225,16 +227,6 @@
       $(".select-item").val('').trigger('change')
       $(".select-expired").val('').trigger('change')
       $(".select-batch").val('').trigger('change')
-    })
-
-    $('#datepicker-order').datepicker({
-      autoclose: true,
-      format: 'yyyy-mm-dd',
-    })
-
-    $('#datepicker-expired').datepicker({
-      autoclose: true,
-      format: 'yyyy-mm-dd',
     })
 
     $('.delete-child').on('click', function(e) {

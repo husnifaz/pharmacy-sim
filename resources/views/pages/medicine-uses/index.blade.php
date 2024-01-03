@@ -16,7 +16,6 @@
             <tr>
               <th width="5%">No</th>
               <th>Nama</th>
-              <th>Deskripsi</th>
               <th>Status</th>
               <th width="10%">Aksi</th>
             </tr>
@@ -48,14 +47,8 @@
           name: 'name'
         },
         {
-          data: 'description',
-          name: 'description'
-        },
-        {
-          data: 'status_label',
-          name: 'status',
-          defaultContent: '',
-          searchable: false
+          data: 'status_text',
+          name: 'status_text',
         },
         {
           data: 'action',

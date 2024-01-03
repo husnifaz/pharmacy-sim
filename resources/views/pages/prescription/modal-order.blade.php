@@ -27,20 +27,25 @@
 							<label>Jumlah</label>
 							<input type="text" class="form-control qty-item" name="qty">
 						</div>
-						<div class="form-group col-md-6">
-							<label>Tanggal Kadaluarsa</label>
-							<select class="form-control select2 select-expired" name="expired_date" style="width: 100%;" disabled></select>
-						</div>
-						<div class="form-group col-md-6">
-							<label>Nomor Batch</label>
-							<select class="form-control select2 select-batch" name="item_stock_id" style="width: 100%;" disabled></select>
-						</div>
 						<div class="form-group col-md-12">
 							<label>Total</label>
 							<input type="text" class="form-control total-item" name="total">
 						</div>
+						<div class="form-group col-md-5">
+							<label>Tanggal Kadaluarsa</label>
+							<select class="form-control select2 select-expired" name="expired_date" style="width: 100%;" disabled></select>
+						</div>
+						<div class="form-group col-md-5">
+							<label>Nomor Batch</label>
+							<select class="form-control select2 select-batch" name="batch_number" style="width: 100%;" disabled></select>
+						</div>
+						<div class="form-group col-md-2">
+							<label>Stok</label>
+							<input type="text" class="form-control" id="total_stock" disabled>
+						</div>
 					</div>
 				</div>
+				<input type="hidden" name="item_stock_id" id="stock_id" value="">
 				<div class="modal-footer">
 					<input type="submit" class="btn btn-primary" value="Tambah Obat">
 				</div>

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('item_stocks', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('item_id');
-            $table->integer('qty');
+            $table->id();
+            $table->unsignedInteger('item_id');
+            $table->integer('quantity');
             $table->date('expired_date');
             $table->string('batch_number', 100)->nullable();
             $table->timestamps();

@@ -11,7 +11,7 @@ class ItemStock extends Model
 
     protected $fillable = [
         'item_id',
-        'qty',
+        'quantity',
         'expired_date',
         'batch_number'
     ];

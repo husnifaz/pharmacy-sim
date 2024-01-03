@@ -19,11 +19,11 @@
                 <div class="box-body col-md-8">
                   <div class="form-group">
                     <label>NIK</label>
-                    <input type="text" class="form-control input-sm" name="nik" value="{{isset($model) ? $model->nik : old('nik')}}">
+                    <input type="text" class="form-control" name="nik" value="{{isset($model) ? $model->nik : old('nik')}}">
                   </div>
                   <div class="form-group">
                     <label>Nama Lengkap</label>
-                    <input type="text" class="form-control input-sm" name="name" value="{{isset($model) ? $model->name : old('name')}}">
+                    <input type="text" class="form-control" name="name" value="{{isset($model) ? $model->name : old('name')}}">
                   </div>
                   <div class="form-group">
                     <div class="radio">
@@ -55,7 +55,7 @@
                   </div>
                   <div class="form-group">
                     <label>No Telp.</label>
-                    <input type="number" class="form-control input-sm" name="phone_number" value="{{isset($model) ? $model->phone_number : old('phone_number')}}">
+                    <input type="number" class="form-control" name="phone_number" value="{{isset($model) ? $model->phone_number : old('phone_number')}}">
                   </div>
                   <input type="submit" class="btn btn-primary btn-submit" value="submit" />
                   <!-- /.box-body -->

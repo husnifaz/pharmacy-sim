@@ -11,7 +11,7 @@ class PurchaseOrder extends Model
 
     protected $fillable = [
         'number',
-        'distributor',
+        'remarks',
         'status',
         'order_date',
         'created_by'
@@ -25,7 +25,7 @@ class PurchaseOrder extends Model
     {
         return [
             0 => 'Gagal',
-            1 => 'Draf',
+            1 => 'Draft',
             2 => 'Selesai',
         ];
     }
@@ -38,19 +38,11 @@ class PurchaseOrder extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'created_by');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function purchaseOrderDetails()
     {
         return $this->hasMany(PurchaseOrderDetail::class, 'purchase_order_id', 'id');
-    }
-
-    protected function getCreatedByAttribute()
-    {
-        $user = User::find($this->attributes['created_by'])->first();
-        if ($user) {
-            return $user->name;
-        }
     }
 }

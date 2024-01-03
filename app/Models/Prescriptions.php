@@ -26,7 +26,7 @@ class Prescriptions extends Model
     {
         return [
             0 => 'Gagal',
-            1 => 'Draf',
+            1 => 'Draft',
             2 => 'Belum Bayar',
             3 => 'Sudah Dibayar',
         ];
@@ -56,7 +56,7 @@ class Prescriptions extends Model
 
     public static function generateNumber()
     {
-        $prefix = 'PRE/'.\Carbon\Carbon::now()->format('ymd');
+        $prefix = 'PRE/' . \Carbon\Carbon::now()->format('ymd');
         $number = self::select('number')
             ->where('created_at', \Carbon\Carbon::now()->toDateString())
             ->first();

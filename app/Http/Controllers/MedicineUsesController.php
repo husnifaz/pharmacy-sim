@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MedicineUses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class MedicineUsesController extends Controller
@@ -16,7 +17,7 @@ class MedicineUsesController extends Controller
         $title = 'Daftar Aturan Pakai';
 
         if ($request->ajax()) {
-            $data = MedicineUses::query();
+            $data = MedicineUses::select(DB::raw("id, name, status, created_at, updated_at, case when status = 1 then 'Aktif' else 'Nonaktif' end as status_text"));
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<div class="btn-group" style="width: 100%; text-align: center">

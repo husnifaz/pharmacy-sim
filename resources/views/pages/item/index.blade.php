@@ -63,12 +63,13 @@
           name: 'price'
         },
         {
-          data: 'unit_medicine.name',
-          defaultContent: ''
+          data: 'medicine_unit.name',
+          defaultContent: '',
+          searchable: false
         },
         {
-          data: 'status_label',
-          defaultContent: ''
+          data: 'status_text',
+          name: 'status_text',
         },
         {
           data: 'action',

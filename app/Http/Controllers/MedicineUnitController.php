@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UnitMedicines;
+use App\Models\MedicineUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class UnitMedicinesController extends Controller
+class MedicineUnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +17,14 @@ class UnitMedicinesController extends Controller
         $title = 'Daftar Satuan Obat';
 
         if ($request->ajax()) {
-            $data = UnitMedicines::query();
+            $data = MedicineUnit::select(DB::raw("id, name, status, created_at, updated_at, case when status = 1 then 'Aktif' else 'Nonaktif' end as status_text"));
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<div class="btn-group" style="width: 100%; text-align: center">
-                    <form action="' . route('unit-medicine.destroy', $row) . '" method="post">
+                    <form action="' . route('medicine-unit.destroy', $row) . '" method="post">
                     ' . method_field('DELETE') . '
                     ' . csrf_field() . '
-                      <a href="' . route('unit-medicine.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <a href="' . route('medicine-unit.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
                       <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
                     </form>
                   </div>';
@@ -32,7 +33,7 @@ class UnitMedicinesController extends Controller
                 ->make(true);
         }
 
-        return view('pages.unit-medicines.index', compact('title'));
+        return view('pages.medicine-unit.index', compact('title'));
     }
 
     /**
@@ -41,7 +42,7 @@ class UnitMedicinesController extends Controller
     public function create()
     {
         $title = 'Tambah Satuan Obat';
-        return view('pages.unit-medicines.form', compact('title'));
+        return view('pages.medicine-unit.form', compact('title'));
     }
 
     /**
@@ -53,17 +54,17 @@ class UnitMedicinesController extends Controller
             'name' => 'required',
         ]);
 
-        $model = new UnitMedicines();
+        $model = new MedicineUnit();
         $model->fill($request->all());
         $model->save();
 
-        return redirect()->route('unit-medicine.index')->with('success', 'Save Success');
+        return redirect()->route('medicine-unit.index')->with('success', 'Save Success');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(UnitMedicines $unitMedicines)
+    public function show(MedicineUnit $unitMedicines)
     {
         //
     }
@@ -71,42 +72,42 @@ class UnitMedicinesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UnitMedicines $unit_medicine)
+    public function edit(MedicineUnit $medicine_unit)
     {
         $title = 'Edit Data Satuan Obat';
-        $model = $unit_medicine;
+        $model = $medicine_unit;
 
-        return view('pages.unit-medicines.form', compact('model', 'title'));
+        return view('pages.medicine-unit.form', compact('model', 'title'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UnitMedicines $unit_medicine)
+    public function update(Request $request, MedicineUnit $medicine_unit)
     {
         $request->validate([
             'name' => 'required',
         ]);
 
-        $unit_medicine->fill($request->all());
-        $unit_medicine->save();
+        $medicine_unit->fill($request->all());
+        $medicine_unit->save();
 
-        return redirect()->route('unit-medicine.index')->with('success', 'Update Success');
+        return redirect()->route('medicine-unit.index')->with('success', 'Update Success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UnitMedicines $unit_medicine)
+    public function destroy(MedicineUnit $medicine_unit)
     {
-        $unit_medicine->delete();
-        return redirect()->route('unit-medicine.index')->with('success', 'Deleted');
+        $medicine_unit->delete();
+        return redirect()->route('medicine-unit.index')->with('success', 'Deleted');
     }
 
 
     public function dropdown()
     {
-        $models = UnitMedicines::select('id', 'name as text')->get();
+        $models = MedicineUnit::select('id', 'name as text')->get();
 
         return response()->json([
             'status' => true,

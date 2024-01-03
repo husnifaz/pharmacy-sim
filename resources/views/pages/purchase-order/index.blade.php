@@ -17,7 +17,6 @@
             <tr>
               <th width="5%">No</th>
               <th>Nomor Order</th>
-              <th>Distributor</th>
               <th>Tanggal Order</th>
               <th>Status</th>
               <th width="10%">Aksi</th>
@@ -48,10 +47,6 @@
         {
           data: 'number',
           name: 'number'
-        },
-        {
-          data: 'distributor',
-          name: 'distributor'
         },
         {
           data: 'order_date',

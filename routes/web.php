@@ -6,7 +6,7 @@ use App\Http\Controllers\MedicineUsesController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrescriptionController;
-use App\Http\Controllers\UnitMedicinesController;
+use App\Http\Controllers\MedicineUnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,8 +36,8 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
 
     Route::resource('item', ItemController::class);
 
-    Route::resource('unit-medicine', UnitMedicinesController::class);
-    Route::get('dropdown/med-unit', [UnitMedicinesController::class, 'dropdown'])->name('unit-medicine.dropdown');
+    Route::resource('medicine-unit', MedicineUnitController::class);
+    Route::get('medicine-unit-dropdown', [MedicineUnitController::class, 'dropdown'])->name('medicine-unit.dropdown');
 
     Route::resource('medicine-use', MedicineUsesController::class);
 

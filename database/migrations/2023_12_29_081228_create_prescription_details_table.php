@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prescription_details', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('prescription_id');
-            $table->integer('item_id');
-            $table->integer('qty');
+            $table->unsignedInteger('item_id');
+            $table->integer('quantity');
             $table->float('price');
-            $table->float('total');
-            $table->integer('medicine_uses_id');
+            $table->float('total', 12, 2);
+            $table->unsignedInteger('medicine_uses_id');
             $table->string('remarks')->nullable();
             $table->string('expired_date')->nullable();
             $table->string('batch_number')->nullable();

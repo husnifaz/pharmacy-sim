@@ -19,11 +19,7 @@
                 <div class="box-body col-md-8">
                   <div class="form-group">
                     <label>Nama</label>
-                    <input type="text" class="form-control input-sm" name="name" value="{{isset($model) ? $model->name : old('name')}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Deskripsi</label>
-                    <input type="text" class="form-control input-sm" name="description" value="{{isset($model) ? $model->description : old('description')}}">
+                    <input type="text" class="form-control" name="name" value="{{isset($model) ? $model->name : old('name')}}">
                   </div>
                   <div class="form-group">
                     <div class="radio">

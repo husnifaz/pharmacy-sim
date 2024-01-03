@@ -67,13 +67,11 @@ class OrderController extends Controller
     {
         $request->validate([
             'number' => 'required',
-            'distributor' => 'required',
             'order_date' => 'required',
         ]);
 
         $model = new PurchaseOrder();
         $model->fill($request->all());
-        $model->order_date = \Carbon\Carbon::parse($request->order_date)->format('Y-m-d');
         $model->created_by = auth()->user()->id;
         $model->save();
 
@@ -165,14 +163,13 @@ class OrderController extends Controller
     {
         $request->validate([
             'item_id' => 'required',
-            'qty' => 'required',
+            'quantity' => 'required',
             'total' => 'required',
             'expired_date' => 'required',
         ]);
 
         $model = new PurchaseOrderDetail();
         $model->fill($request->all());
-        $model->expired_date = \Carbon\Carbon::parse($request->expired_date)->format('Y-m-d');
         $model->save();
 
         return redirect()->route('order.edit', ['order' => $model->purchase_order_id])->with('success', 'Tambah Barang Sukses');

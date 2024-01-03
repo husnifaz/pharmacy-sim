@@ -15,19 +15,19 @@
 							<label>Item</label>
 							<select class="form-control select2 itemId" name="item_id" style="width: 100%;"></select>
 						</div>
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-6">
 							<label>Harga</label>
-							<input type="text" class="form-control price-item" name="price" readonly>
+							<input type="text" class="form-control price-item" name="order_price" readonly>
 						</div>
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-6">
 							<label>Jumlah</label>
-							<input type="text" class="form-control qty-item" name="qty">
+							<input type="text" class="form-control qty-item" name="quantity">
 						</div>
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-6">
 							<label>Tanggal Kadaluarsa</label>
-							<input type="text" class="form-control expired-item" id="datepicker-expired" name="expired_date">
+							<input type="date" class="form-control expired-item" name="expired_date">
 						</div>
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-6">
 							<label>Nomor Batch</label>
 							<input type="text" class="form-control batch-item" name="batch_number">
 						</div>

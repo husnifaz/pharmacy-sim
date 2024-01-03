@@ -21,7 +21,6 @@
 
   <!-- <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}"> -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.min.css')}}">
   <link rel="stylesheet" href="{{asset('assets/sweetalert2.css')}}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
@@ -66,7 +65,6 @@
   <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('js/dataTables.bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
-  <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('js/main.js?v.2')}}"></script>
   @yield('script')
   @if(session()->has('success'))

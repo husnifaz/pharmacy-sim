@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Items;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class ItemController extends Controller
@@ -18,7 +19,9 @@ class ItemController extends Controller
         $title = 'Daftar Obat';
 
         if ($request->ajax()) {
-            $data = Items::with('unitMedicine');
+            $data = Items::select(DB::raw("
+                *, case when status = 1 then 'Aktif' else 'Nonaktif' end as status_text
+            "))->with('medicineUnit');
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<div class="btn-group" style="width: 100%; text-align: center">
@@ -77,7 +80,6 @@ class ItemController extends Controller
      */
     public function show(Items $item)
     {
-
     }
 
     /**
@@ -115,7 +117,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.  
+     * Remove the specified resource from storage.
      *
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response

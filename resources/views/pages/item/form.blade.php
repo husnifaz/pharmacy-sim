@@ -19,19 +19,19 @@
                 <div class="box-body col-md-8">
                   <div class="form-group">
                     <label>Nama Obat</label>
-                    <input type="text" class="form-control input-sm" name="name" value="{{isset($model) ? $model->name : old('name')}}">
+                    <input type="text" class="form-control" name="name" value="{{isset($model) ? $model->name : old('name')}}">
                   </div>
                   <div class="form-group">
                     <label>Generik</label>
-                    <input type="text" class="form-control input-sm" name="generic" value="{{isset($model) ? $model->generic : old('generic')}}">
+                    <input type="text" class="form-control" name="generic" value="{{isset($model) ? $model->generic : old('generic')}}">
                   </div>
                   <div class="form-group">
                     <label>Harga Beli</label>
-                    <input type="number" class="form-control input-sm" name="order_price" value="{{isset($model) ? $model->order_price : old('order_price')}}">
+                    <input type="number" class="form-control" name="order_price" value="{{isset($model) ? $model->order_price : old('order_price')}}">
                   </div>
                   <div class="form-group">
                     <label>Harga Jual</label>
-                    <input type="number" class="form-control input-sm" name="price" value="{{isset($model) ? $model->price : old('price')}}">
+                    <input type="number" class="form-control" name="price" value="{{isset($model) ? $model->price : old('price')}}">
                   </div>
                   <div class="form-group">
                     <div class="radio">
@@ -47,7 +47,7 @@
                   </div>
                   <div class="form-group">
                     <label>Satuan Obat</label>
-                    <select class="form-control select2" name="med_unit_id" id="med_unit_select">
+                    <select class="form-control select2" name="medicine_unit_id" id="med_unit_select">
                     </select>
                   </div>
                   <input type="submit" class="btn btn-primary btn-submit" value="submit" />
@@ -63,9 +63,8 @@
   $(document).ready(function() {
     $("#med_unit_select").select2({
       ajax: {
-        url: "{{route('unit-medicine.dropdown')}}", // Replace with your actual endpoint URL
+        url: "{{route('medicine-unit.dropdown')}}", // Replace with your actual endpoint URL
         dataType: 'json',
-        delay: 250,
         data: function(params) {
           return {
             q: params.term, // Search term
@@ -79,7 +78,7 @@
         },
         cache: true
       },
-      placeholder: 'Cari Satuan Obat',
+      placeholder: 'Satuan Obat',
     })
   })
 </script>
