@@ -174,7 +174,7 @@
             return {
               results: $.map(data, function(item) {
                 return {
-                  id: item.id, // Use custom_id as the id
+                  id: item.batch_number, // Use custom_id as the id
                   text: item.batch_number,
                 };
               })
@@ -186,8 +186,24 @@
     })
 
     $(".select-batch").on('change', function() {
-      let stockId = $(this).find(':selected').val()
-      $("#stock_id").val(stockId)
+      let params = $("#store-detail").serialize()
+      let route = "{{route('prescription.get-stock')}}"
+
+      $.ajax({
+        url: route + '?' + params,
+        method: 'GET'
+      }).done(function(data) {
+        if (data) {
+          $("#stock_id").val(data.id)
+          $("#total_stock").val(data.quantity)
+
+          if (data.quantity > $(".qty-item").val()) {
+            $(".btn-submit").prop('disabled', false)
+          } else {
+            $(".btn-submit").prop('disabled', true)
+          }
+        }
+      })
     })
 
     $(".select-medicine-uses").select2({
@@ -227,6 +243,7 @@
       $(".select-item").val('').trigger('change')
       $(".select-expired").val('').trigger('change')
       $(".select-batch").val('').trigger('change')
+      $("#total_stock").val('')
     })
 
     $('.delete-child').on('click', function(e) {

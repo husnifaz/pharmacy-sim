@@ -66,6 +66,7 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
         Route::post('destroy', [PrescriptionController::class, 'destroy'])->name('prescription.destroy');
         Route::get('list-item', [PrescriptionController::class, 'listItem'])->name('prescription.list-item');
         Route::get('list-item-stock', [PrescriptionController::class, 'listItemStock'])->name('prescription.list-item-stock');
+        Route::get('get-stock', [PrescriptionController::class, 'getStock'])->name('prescription.get-stock');
         Route::get('list-medicine-uses', [PrescriptionController::class, 'listMedicineUses'])->name('prescription.list-medicine-uses');
         Route::post('store-detail', [PrescriptionController::class, 'storeDetail'])->name('prescription.store-detail');
         Route::post('delete-child', [PrescriptionController::class, 'deleteChild'])->name('prescription.delete-child');

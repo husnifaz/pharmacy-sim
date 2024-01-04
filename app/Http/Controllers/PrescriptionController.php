@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\OrderStock;
+use App\Jobs\PrescriptionStock;
 use App\Models\Items;
 use App\Models\ItemStock;
 use App\Models\MedicineUses;
@@ -170,7 +171,9 @@ class PrescriptionController extends Controller
         $ed = $request->get('expired_date', false);
         $batch = $request->get('batch_number', false);
 
-        $model = ItemStock::select('id', 'expired_date', 'batch_number');
+        $model = ItemStock::select('id', 'expired_date', 'batch_number')
+            ->orderBy('expired_date', 'asc');
+
         if ($item) {
             $model = $model->where('item_id', $item);
         }
@@ -184,6 +187,31 @@ class PrescriptionController extends Controller
         $model = $model->get();
 
         return response()->json($model);
+    }
+
+    /**
+     * Stock Obat
+     */
+    public function getStock(Request $request)
+    {
+        $item = $request->get('item_id', false);
+        $ed = $request->get('expired_date', false);
+        $batch = $request->get('batch_number', false);
+
+        $model = ItemStock::selectRaw('id, item_id, expired_date, batch_number, quantity')
+            ->where('item_id', $item)
+            ->where('expired_date', $ed)
+            ->where('batch_number', $batch)
+            ->first();
+
+        $exist = PrescriptionDetails::where('item_stock_id', $model->id)
+            ->where('prescriptions.status', 1)
+            ->leftJoin('prescriptions', 'prescriptions.id', 'prescription_details.prescription_id')
+            ->sum('quantity');
+
+        $arr = ['id' => $model->id, 'quantity' => ($model->quantity - $exist)];
+
+        return response()->json($arr);
     }
 
     /**
@@ -210,11 +238,21 @@ class PrescriptionController extends Controller
     public function storeDetail(Request $request)
     {
         $request->validate([
+            'prescription_id' => 'required',
             'item_id' => 'required',
-            'qty' => 'required',
+            'quantity' => 'required',
             'total' => 'required',
             'item_stock_id' => 'required',
         ]);
+
+        //validation
+        $check = PrescriptionDetails::where('prescription_id', $request->prescription_id)
+            ->where('item_stock_id', $request->item_stock_id)
+            ->first();
+
+        if ($check) {
+            return back()->with('error', 'Obat sudah diinputkan dengan stok yang sama, silahkan gabungkan');
+        }
 
         $model = new PrescriptionDetails();
         $model->fill($request->all());
@@ -230,12 +268,12 @@ class PrescriptionController extends Controller
      */
     public function deleteChild(Request $request)
     {
-        $model = PurchaseOrderDetail::find($request->id);
+        $model = PrescriptionDetails::find($request->id);
         if ($model) {
             $model->delete();
         }
 
-        return redirect()->route('prescription.edit', ['order' => $model->purchase_order_id])->with('success', 'Delete item success');
+        return redirect()->route('prescription.edit', ['order' => $model->prescription_id])->with('success', 'Delete item success');
     }
 
     /**
@@ -244,14 +282,14 @@ class PrescriptionController extends Controller
      */
     public function finishOrder(Request $request)
     {
-        $model = PurchaseOrder::find($request->id);
+        $model = Prescriptions::find($request->id);
         $model->fill($request->all());
         $model->status = 2;
         $model->save();
 
-        $model->purchaseOrderDetails;
+        $model->prescriptionDetails;
 
-        OrderStock::dispatch($model);
+        PrescriptionStock::dispatch($model);
 
         return redirect()->route('prescription.index')->with('success', 'Order selesai');
     }

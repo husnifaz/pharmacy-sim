@@ -42,6 +42,11 @@ class Prescriptions extends Model
         ];
     }
 
+    public function prescriptionDetails()
+    {
+        return $this->hasMany(PrescriptionDetails::class, 'prescription_id', 'id');
+    }
+
     protected function getStatusLabelAttribute()
     {
         $listStatus = $this->listStatus();

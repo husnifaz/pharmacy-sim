@@ -21,7 +21,7 @@ class ItemStockController extends Controller
 
         if ($request->ajax()) {
             $data = ItemStock::select(DB::raw("
-                items.id, items.name as item_name, sum(qty) as total_stock
+                items.id, items.name as item_name, sum(quantity) as total_stock
             "))->leftJoin("items", "items.id", "item_stocks.item_id")
                 ->groupBy('id', 'item_name');
 

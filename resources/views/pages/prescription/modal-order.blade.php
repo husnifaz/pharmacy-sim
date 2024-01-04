@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-default">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="{{route('prescription.store-detail')}}" method="post">
+			<form action="{{route('prescription.store-detail')}}" id="store-detail" method="post">
 				@csrf
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -25,7 +25,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<label>Jumlah</label>
-							<input type="text" class="form-control qty-item" name="qty">
+							<input type="text" class="form-control qty-item" name="quantity">
 						</div>
 						<div class="form-group col-md-12">
 							<label>Total</label>
@@ -41,13 +41,13 @@
 						</div>
 						<div class="form-group col-md-2">
 							<label>Stok</label>
-							<input type="text" class="form-control" id="total_stock" disabled>
+							<input type="text" class="form-control" id="total_stock" value="0" disabled>
 						</div>
 					</div>
 				</div>
 				<input type="hidden" name="item_stock_id" id="stock_id" value="">
 				<div class="modal-footer">
-					<input type="submit" class="btn btn-primary" value="Tambah Obat">
+					<input type="submit" class="btn btn-primary btn-submit" value="Tambah Obat" disabled>
 				</div>
 			</form>
 		</div>

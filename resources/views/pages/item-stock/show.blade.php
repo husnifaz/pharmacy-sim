@@ -42,8 +42,8 @@
           searchable: false
         },
         {
-          data: 'qty',
-          name: 'qty',
+          data: 'quantity',
+          name: 'quantity',
           orderable: false,
           searchable: false
         },

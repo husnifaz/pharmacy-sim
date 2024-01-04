@@ -28,6 +28,7 @@ class MenuSeeder extends Seeder
                 ['id' => 8, 'name' => 'Obat', 'url' => 'item', 'icons' => '', 'parent_id' => 5, 'order' => 3],
                 ['id' => 9, 'name' => 'Pembelian', 'url' => 'order', 'icons' => 'fa-truck', 'order' => 4],
                 ['id' => 10, 'name' => 'Penjualan', 'url' => 'prescription', 'icons' => 'fa-shopping-cart', 'order' => 5],
+                ['id' => 11, 'name' => 'Stok', 'url' => 'item-stock', 'icons' => 'fa-server', 'order' => 6],
             ];
 
             foreach ($array as $ar) {

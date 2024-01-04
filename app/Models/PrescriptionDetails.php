@@ -13,10 +13,12 @@ class PrescriptionDetails extends Model
         'item_id',
         'prescription_id',
         'medicine_uses_id',
-        'qty',
+        'quantity',
         'price',
         'total',
         'remarks',
+        'expired_date',
+        'batch_number',
         'item_stock_id'
     ];
 
