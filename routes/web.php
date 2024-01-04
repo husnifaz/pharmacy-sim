@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemStockController;
 use App\Http\Controllers\MedicineUsesController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
@@ -69,5 +70,11 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
         Route::post('store-detail', [PrescriptionController::class, 'storeDetail'])->name('prescription.store-detail');
         Route::post('delete-child', [PrescriptionController::class, 'deleteChild'])->name('prescription.delete-child');
         Route::post('finish-prescription', [PrescriptionController::class, 'finishOrder'])->name('prescription.finish-prescription');
+    });
+
+    Route::prefix('item-stock')->group(function () {
+        Route::get('/', [ItemStockController::class, 'index'])->name('item-stock.index');
+        Route::get('show', [ItemStockController::class, 'show'])->name('item-stock.show');
+        Route::get('pull', [ItemStockController::class, 'pull'])->name('item-stock.pull');
     });
 });
