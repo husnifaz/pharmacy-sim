@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employees;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class EmployeesController extends Controller
 {
@@ -12,10 +13,29 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $model = Employees::orderBy('id', 'asc')->get();
-        return view('pages.employees.index', compact('model'));
+        $title = 'Daftar Pegawai';
+
+        if ($request->ajax()) {
+            $data = Employees::query();
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '<div class="btn-group" style="width: 100%; text-align: center">
+                    <form action="' . route('employee.destroy', $row) . '" method="post">
+                    ' . method_field('DELETE') . '
+                    ' . csrf_field() . '
+                      <a href="' . route('employee.show', $row) . '" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
+                      <a href="' . route('employee.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
+                    </form>
+                  </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('pages.employees.index', compact('title'));
     }
 
     /**
@@ -25,7 +45,8 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        return view('pages.employees.form');
+        $title = 'Tambah Pegawai';
+        return view('pages.employees.form', compact('title'));
     }
 
     /**
@@ -62,9 +83,9 @@ class EmployeesController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function show(employees $employees)
+    public function show(Employees $employee)
     {
-        $model = Employees::find($employees)->first();
+        $model = Employees::find($employee)->first();
         return view('pages.employees.show', compact('model'));
     }
 
@@ -74,10 +95,12 @@ class EmployeesController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function edit(employees $employees)
+    public function edit(Employees $employee)
     {
-        $model = Employees::find($employees)->first();
-        return view('pages.employees.form', compact('model'));
+        $title = 'Edit Data Pegawai';
+        $model = Employees::find($employee)->first();
+
+        return view('pages.employees.form', compact('model', 'title'));
     }
 
     /**
@@ -87,29 +110,29 @@ class EmployeesController extends Controller
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, employees $employees)
+    public function update(Request $request, Employees $employee)
     {
         $request->validate([
             'nik' => 'required',
-            'nama' => 'required',
+            'name' => 'required',
         ]);
 
-        $employees->fill($request->all());
-        $employees->tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
-        $employees->save();
+        $employee->fill($request->all());
+        $employee->dob = \Carbon\Carbon::parse($request->dob)->format('Y-m-d');
+        $employee->save();
 
-        return redirect('employee.index')->with('success', 'Update Success');
+        return redirect()->route('employee.index')->with('success', 'Update Success');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage.  
      *
      * @param  \App\Models\employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function destroy(employees $employees)
+    public function destroy(Employees $employee)
     {
-        $employees->delete();
-        return redirect('employee.index')->with('success', 'Deleted');
+        $employee->delete();
+        return redirect()->route('employee.index')->with('success', 'Deleted');
     }
 }

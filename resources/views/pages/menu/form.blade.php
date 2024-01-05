@@ -1,18 +1,6 @@
 @extends('default')
 @section('content_header')
-@if (isset($model))
-<x-title-bar title="Form Edit Menu" />
-@else
-<x-title-bar title="Form Input Menu" />
-@endif
-@if ($errors->any())
-<div class="{{'alert alert-danger alert-dismissible'}}">
-  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-  @foreach($errors->all() as $error)
-  <li>{{$error}}</li>
-  @endforeach
-</div>
-@endif
+<x-title-bar title="{{$title}}" />
 @endsection
 @section('content')
 <div class="row">
@@ -20,9 +8,10 @@
     <div class="box">
       <div class="box-body">
         @if (isset($model))
-        <form role="form" action="{{url('menu/update', $model->id)}}" method="post">
+        <form role="form" action="{{route('menu.update', $model)}}" method="post">
+          @method('PUT')
           @else
-          <form role="form" action="store" method="post">
+          <form role="form" action="{{route('menu.store')}}" method="post">
             @endif
             @csrf
             <div class="box-body">
@@ -48,6 +37,7 @@
                 <div class="form-group col-md-4">
                   <label>Parent Menu</label>
                   <select class="form-control select2" name="parent_id">
+                    <option value="">&nbsp;</option>
                     @foreach(\App\Models\Menu::getListParentMenu() as $parent)
                     @if (isset($model->parent_id))
                     <option value="{{$parent->id}}" {{($parent->id == $model->id) ? 'selected' : ''}}>{{$parent->name}}</option>
@@ -58,25 +48,11 @@
                   </select>
                 </div>
               </div>
-              <input type="submit" class="btn btn-primary" value="submit" />
+              <input type="submit" class="btn btn-primary btn-submit" value="submit" />
               <!-- /.box-body -->
           </form>
       </div>
     </div>
   </div>
 </div>
-@endsection
-
-@section('script')
-<script>
-  $('input[type="submit"]').click(function(e) {
-    e.preventDefault()
-    Swal.fire({
-      title: "Good job!",
-      text: "You clicked the button!",
-      icon: "success"
-    });
-    // console.log(this.closest("form").submit())
-  })
-</script>
 @endsection

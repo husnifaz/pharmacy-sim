@@ -9,8 +9,10 @@ class Permission
 {
     public function handle($request, Closure $next)
     {
-        if (!($request->is(Role::getListPermission()))) {
-            return abort(403, 'Forbidden');
+        if (!auth()->user()->role_admin) {
+            if (!($request->is(Role::getListPermission()))) {
+                return abort(403, 'Forbidden');
+            }
         }
 
         return $next($request);

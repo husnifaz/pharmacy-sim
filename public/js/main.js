@@ -1,17 +1,3 @@
-$("#data1").DataTable({
-  'paging'      : true,
-  'lengthChange': false,
-  'searching'   : true,
-  'ordering'    : false,
-  'info'        : false,
-  'autoWidth'   : false
-})
-
-$('#datepicker').datepicker({
-  autoclose: true,
-  format: 'dd-mm-yyyy',
-})
-
 function confirmDelete(event) {
   if(!confirm("Apakah anda yakin"))
       event.preventDefault();
@@ -35,4 +21,25 @@ function previewImages() {
     reader.readAsDataURL(file);
   }
 }
+
 $('#file-input').on("change", previewImages);
+
+$('.btn-submit').click(function (e) {
+	e.preventDefault()
+	Swal.fire({
+		title: "Apakah anda yakin ?",
+		text: "Data akan tersimpan dalam sistem",
+		icon: "question",
+		showCancelButton: true,
+		confirmButtonText: 'Yes',
+		cancelButtonText: 'No'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			this.closest("form").submit()
+		}
+	})
+})
+
+$(".check-val").change(function(){
+  this.value = this.checked ? 1 : 0;
+});

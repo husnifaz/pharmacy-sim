@@ -33,11 +33,6 @@ class Role extends Model
     public static function getListPermission()
     {
         $userId = auth()->user()->id;
-        if ($userId == 4) {
-            $modelMenu = Menu::whereNotNull('parent_id')->get(DB::raw("concat(url, '*') as url"));
-            return $modelMenu->pluck('url')->toArray();
-        }
-
         $modelRole = self::where('user_id', $userId)
             ->with('menu')->get();
 

@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -14,10 +15,28 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $model = User::orderBy('id', 'asc')->get();
-        return view('pages.user.index', compact('model'));
+        $title = 'Daftar Pengguna';
+
+        if ($request->ajax()) {
+            $data = User::query();
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '<div class="btn-group" style="width: 100%; text-align: center">
+                    <form action="' . route('user.destroy', $row) . '" method="post">
+                    ' . method_field('DELETE') . '
+                    ' . csrf_field() . '
+                      <a href="' . route('user.show', $row) . '" class="btn bg-olive btn-xs"><span class="fa fa-eye"></span></a>
+                      <a href="' . route('user.edit', $row) . '" class="btn bg-orange btn-xs"><span class="fa fa-edit"></span></a>
+                      <button class="btn btn-danger btn-xs" onClick="confirmDelete(event)" type="submit"><span class="fa fa-trash"></span></a>
+                    </form>
+                  </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('pages.user.index', compact('title'));
     }
 
     /**
@@ -27,7 +46,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('pages.user.form');
+        $title = 'Tambah Pengguna';
+        return view('pages.user.form', compact('title'));
     }
 
     /**
@@ -72,8 +92,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $title = 'Edit Pengguna';
         $model = User::find($user)->first();
-        return view('pages.user.form', compact('model'));
+        return view('pages.user.form', compact('model', 'title'));
     }
 
     /**
@@ -113,8 +134,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $model = User::find($user->id);
+        $model->delete();
+
+        return back()->with('success', 'Success Deleted');
     }
 }

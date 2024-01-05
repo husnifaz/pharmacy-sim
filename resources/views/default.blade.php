@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" name="viewport">
   <title>@yield('title')</title>
-  <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('css/font-awesome/css/font-awesome.min.css')}}">
   <!-- Ionicons -->
@@ -19,8 +19,8 @@
             apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{asset('css/skin-blue.min.css')}}">
 
-  <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}">
-  <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.min.css')}}">
+  <!-- <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap.min.css')}}"> -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="{{asset('assets/sweetalert2.css')}}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
@@ -59,16 +59,48 @@
   <script src="{{asset('js/bootstrap.min.js')}}"></script>
   <!-- AdminLTE App -->
   <script src="{{asset('js/adminlte.min.js')}}"></script>
-  <script src="{{asset('assets/sweetalert2.all.js')}}"></script>
-  <script src="{{asset('js/select2.min.js')}}"></script>
+  <script src="{{asset('assets/sweetalert2.js')}}"></script>
+  <script src="{{asset('js/select2.full.min.js')}}"></script>
   <script src="{{asset('js/bootstrap-show-password.min.js')}}"></script>
   <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('js/dataTables.bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
-  <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
-  <script src="{{asset('js/main.js')}}"></script>
+  <script src="{{asset('js/main.js?v.2')}}"></script>
   @yield('script')
+  @if(session()->has('success'))
+  <script>
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "{{session()->get('success')}}",
+      timer: 2000,
+      showCancelButton: false,
+      showConfirmButton: false
+    })
+  </script>
+  {{session()->forget('success')}}
+  @endif
+
+  @if(session()->has('error'))
+  <script>
+    Swal.fire({
+      title: "Ada yang salah",
+      icon: "error",
+      text: "{{session()->get('error')}}"
+    })
+  </script>
+  {{session()->forget('error')}}
+  @endif
+
+  @if($errors->any())
+  <script>
+    Swal.fire({
+      title: "Ada yang salah",
+      icon: "error",
+      text: "{{$errors->first()}}"
+    })
+  </script>
+  @endif
 </body>
-@include('parts.modal')
 
 </html>

@@ -2,9 +2,11 @@
 <h1>{{$title}}</h1>
 <ol class="breadcrumb">
   <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-  <?php $segments = ''; ?>
+  @php
+  $segments = '';
+  @endphp
   @foreach(Request::segments() as $segment)
-  <?php $segments .= '/' . $segment; ?>
-  <li><a href="{{$segments}}">{{ucfirst($segment)}}</a></li>
+  @php $segments .= '/' . $segment; @endphp
+  <li><a href="{{url($segments)}}">{{ucwords(str_replace('-', ' ', $segment))}}</a></li>
   @endforeach
 </ol>
