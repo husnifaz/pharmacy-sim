@@ -8,6 +8,9 @@
     <div class="box">
       <!-- /.box-header -->
       <div class="box-body">
+        <div class="col">
+          <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-so-add"><span class="fa fa-plus"></span>&emsp;Tambah Stock Opname Obat</button>
+        </div>
         <table class="table table-bordered table-hover" id="table-data" width="100%">
           <thead>
             <tr>
@@ -15,6 +18,7 @@
               <th>Stok</th>
               <th>Tanggal Kadaluarsa</th>
               <th>Nomor Batch</th>
+              <th>Status</th>
               <th width="10%">Aksi</th>
             </tr>
           </thead>
@@ -56,6 +60,12 @@
           name: 'batch_number'
         },
         {
+          data: 'status_label',
+          name: 'status',
+          orderable: false,
+          searchable: false
+        },
+        {
           data: 'action',
           name: 'action',
           orderable: false,
@@ -64,5 +74,36 @@
       ]
     });
   });
+
+  function btPull(id) {
+    $('#modal-pull').modal('show')
+    $('#item_stock_id').val(id)
+  }
+
+  function btStockOpname(id) {
+    $('#modal-so-add').modal('show')
+    $('#item_stock_id').val(id)
+  }
+
+  $(".select-item").select2({
+      ajax: {
+        url: "{{route('prescription.list-item')}}", // Replace with your actual endpoint URL
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+          return {
+            query: params.term, // Search term
+          };
+        },
+        processResults: function(data, params) {
+          return {
+            results: data,
+          };
+        },
+        cache: true
+      },
+      placeholder: 'Ketik nama obat',
+      minimumInputLength: 1
+    })
 </script>
 @endsection

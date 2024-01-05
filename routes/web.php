@@ -76,6 +76,7 @@ Route::middleware(['verified:login', 'permission'])->group(function () {
     Route::prefix('item-stock')->group(function () {
         Route::get('/', [ItemStockController::class, 'index'])->name('item-stock.index');
         Route::get('show', [ItemStockController::class, 'show'])->name('item-stock.show');
-        Route::get('pull', [ItemStockController::class, 'pull'])->name('item-stock.pull');
+        Route::post('pull', [ItemStockController::class, 'pullItem'])->name('item-stock.pull');
+        Route::post('add-stock-opname', [ItemStockController::class, 'addStockOpname'])->name('item-stock.add-stock-opname');
     });
 });
